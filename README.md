@@ -8,3 +8,11 @@ Assignment of MT2013
 * Tìm hiểu Chi-quared method
 * Rảnh thì đọc cái docs luôn đó là giải 1 bài trong btl mình luôn đó
 * [Xem 12 vid đầu](https://www.youtube.com/playlist?list=PLblh5JKOoLUK0FLuzwntyYI10UQFUhsY9)
+
+## Task
+**Project 1**:
+- Hoàng câu 1
+- Thành câu 3
+- Khôi câu 2,4
+**Project 2**:
+- Minh
