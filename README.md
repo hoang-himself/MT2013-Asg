@@ -2,9 +2,9 @@
 
 Assignment of MT2013
 
-## Latex report
+## Resources
 
-[Link](https://www.overleaf.com/1928477183hdqsbktcydxc)
+[Latex report](https://www.overleaf.com/1928477183hdqsbktcydxc)
 
 ## TODO
 
