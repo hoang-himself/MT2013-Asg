@@ -2,6 +2,10 @@
 
 Assignment of MT2013
 
+## Latex report
+
+[Link](https://www.overleaf.com/1928477183hdqsbktcydxc)
+
 ## TODO
 
 * Đọc sách chap 9 (nhớ đọc kỹ tại phần này hơi khó hiểu) đặc biệt ở 9.8 có phần ví dụ với btl của mình
