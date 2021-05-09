@@ -2,9 +2,9 @@
 
 Assignment of MT2013
 
-## Resources
+## Latex report
 
-[Latex report](https://www.overleaf.com/1928477183hdqsbktcydxc)
+[Link](https://www.overleaf.com/1928477183hdqsbktcydxc)
 
 ## TODO
 
@@ -22,3 +22,5 @@ Assignment of MT2013
 
 **Project 2**:
 - Minh
+
+**[Rstudio tutorial](https://www.youtube.com/watch?v=_V8eKsto3Ug)**
