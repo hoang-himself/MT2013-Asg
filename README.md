@@ -24,3 +24,5 @@ Assignment of MT2013
 - Minh
 
 **[Rstudio tutorial](https://www.youtube.com/watch?v=_V8eKsto3Ug)**
+**[Rstudio documentatin](https://www.rdocumentation.org/)**
+
