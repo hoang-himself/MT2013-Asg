@@ -32,3 +32,5 @@ Assignment of MT2013
 
 ## Reference for project 2
 [Transformation](https://trinachi.github.io/data-design-builds/ch11.html)
+[Descriptive Statistics](https://www.statmethods.net/stats/descriptives.html)
+[Plotting Graph](https://www.statmethods.net/graphs/creating.html)
