@@ -28,3 +28,7 @@ Assignment of MT2013
 **[Rstudio documentation](https://www.rdocumentation.org/)**
 
 **[Statistics 101 course](https://www.youtube.com/c/BrandonFoltz/playlists?view=50&sort=dd&shelf_id=3)**
+
+
+## Reference for project 2
+[Transformation](https://trinachi.github.io/data-design-builds/ch11.html)
