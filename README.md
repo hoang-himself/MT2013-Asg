@@ -2,9 +2,11 @@
 
 Assignment of MT2013
 
-## Latex report
+Both projects take on topic 2 respectively
 
-[Link](https://www.overleaf.com/1928477183hdqsbktcydxc)
+## Resources
+
+[Latex report](https://www.overleaf.com/1928477183hdqsbktcydxc)
 
 ## TODO
 
