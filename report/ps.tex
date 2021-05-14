@@ -1,0 +1,734 @@
+\documentclass[a4paper]{article}
+
+% Global layout
+\usepackage{fancyhdr, graphicx, hyperref, indentfirst, lastpage, setspace}
+\usepackage[margin=40mm]{geometry}
+
+% Encoding
+\usepackage[utf8]{vntex, inputenc} % vntex first to avoid Vietnamese auto captions
+\usepackage{amsmath, amssymb, gensymb}
+
+% Better table
+\usepackage{array, booktabs, multicol, multirow, siunitx}
+
+% Code space
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{minted} % needs --shell-escape flag and Pygments
+
+% Extra
+\usepackage{caption, float}
+
+% Page setup
+% \allowdisplaybreaks{} % to have page breaks inside align* environment
+\hypersetup{urlcolor=blue,linkcolor=black,citecolor=red,colorlinks=true}
+\usemintedstyle{emacs}
+\numberwithin{equation}{section}
+\renewcommand{\arraystretch}{1.2} % space between table rows
+
+% Global style setup
+\makeatletter % change font size for not having underfull hbox
+\renewcommand\Huge{\@setfontsize\Huge{22pt}{18}}
+\makeatother
+
+\AtBeginDocument{\renewcommand*\contentsname{Contents}}
+\AtBeginDocument{\renewcommand*\refname{References}}
+\setlength{\headheight}{40pt}
+\pagestyle{fancy}
+\fancyhead{} % clear all header fields
+\fancyhead[L]{
+  \begin{tabular}{rl}
+    \begin{picture}(25,15)(0,0)
+    \put(0,-8){\includegraphics[width=8mm, height=8mm]{hcmut.png}}
+    \end{picture}
+    \begin{tabular}{l}
+      \textbf{\bf \ttfamily University of Technology, Ho Chi Minh City}\\
+      \textbf{\bf \ttfamily Faculty of Applied Science}
+    \end{tabular}
+  \end{tabular}
+}
+\fancyhead[R]{
+	\begin{tabular}{l}
+		\tiny \bf \\
+		\tiny \bf
+	\end{tabular}  }
+\fancyfoot{} % clear all footer fields
+\fancyfoot[L]{\scriptsize \ttfamily Assignment for Probability and Statistics-Academic year 2020 --- 2021}
+\fancyfoot[R]{\scriptsize \ttfamily Page {\thepage}/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0.3pt}
+
+\everymath{\color{blue}}
+
+\begin{document}
+
+\begin{titlepage}
+  \begin{center}
+    VIETNAM NATIONAL UNIVERSITY, HO CHI MINH CITY \\
+    UNIVERSITY OF TECHNOLOGY \\
+    FACULTY OF APPLIED SCIENCE
+  \end{center}
+
+  \vspace{1cm}
+
+  \begin{figure}[h!]
+    \begin{center}
+      \includegraphics[width=3cm]{hcmut.png}
+    \end{center}
+  \end{figure}
+
+  \vspace{1cm}
+
+  \begin{center}
+    \begin{tabular}{c}
+      \textbf{\Large Probability and Statistics (MT2013)} \\
+      {}                                                  \\
+      \midrule                                            \\
+      \textbf{\Large Semester 202, Duration: 03 weeks}    \\
+      {}                                                  \\
+      \textbf{\Huge Assignment}                           \\
+      {}                                                  \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+
+  \vspace{3cm}
+
+  \begin{table}[h]
+    \begin{tabular}{rrl}
+      \hspace{5cm} & Advisor: & Nguyễn Tiến Dũng \\
+    \end{tabular}
+  \end{table}
+
+  \begin{center}
+    {\footnotesize HO CHI MINH CITY, MAY 2021}
+  \end{center}
+\end{titlepage}
+
+
+%\thispagestyle{empty}
+
+\newpage
+\tableofcontents
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Member list \& Workload}
+\begin{center}
+  \begin{tabular}{llclc}
+    \toprule
+    \textbf{No.} & \textbf{Full name}    & \textbf{Student ID} & \textbf{Problems} & \textbf{Percentage of work} \\
+    \midrule
+    1            & Lưu Nguyễn Hoàng Minh & 1952845             & Exercise 1: e     & \multirow{2}{*}{100\%}      \\
+                 &                       &                     & Exercise 2: b     &                             \\
+    \midrule
+    2            & Nguyễn Hoàng          & 1952255             & Exercise 1: e     & \multirow{2}{*}{100\%}      \\
+                 &                       &                     & Exercise 2: b     &                             \\
+    \midrule
+    3            & Nguyễn Chính Khôi     & 1952793             & Exercise 1: c     & \multirow{2}{*}{100\%}      \\
+                 &                       &                     & Exercise 6        &                             \\
+    \midrule
+    4            & Nguyễn Duy Thành      & 1952456             & Exercise 1: d, e  & \multirow{2}{*}{100\%}      \\
+                 &                       &                     & Exercise 6        &                             \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Project 1}
+\subsection{Problem 1}
+
+Records for the blood lead levels of workers in five buildings of a battery factory are taken as follows:
+
+\begin{center}
+  \begin{tabular}{cccccc}
+    \toprule
+    \multirow{2}{*}{Observation} & \multicolumn{5}{c}{Factor level}                             \\
+    \cmidrule(lr){2-6}
+                                 & F1                               & F2   & F3   & F4   & F5   \\
+    \midrule
+    1                            & 0.25                             & 0.22 & 0.25 & 0.31 & 0.22 \\
+    2                            & 0.28                             & 0.25 & 0.26 & 0.33 & 0.28 \\
+    3                            & 0.32                             & 0.24 & 0.28 & 0.30 & 0.28 \\
+    4                            & 0.22                             & 0.28 & 0.25 & 0.29 & 0.25 \\
+    5                            & 0.22                             & 0.31 & 0.22 & 0.25 & 0.30 \\
+    6                            &                                  & 0.21 & 0.28 &      &      \\
+    7                            &                                  & 0.22 & 0.31 &      &      \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+We are to compare the blood lead levels among the workers in the above factory at the significance level \( \alpha = 3\% \).
+
+\subsubsection{Classification}
+This problem is classified as Testing for statistical differences among two or more means.
+
+\subsubsection{Method for solving}
+Up to this point, we have been comparing two populations using the Independent samples t-test and Matched-sample t-test.
+However, they are only so good at testing two samples, but what about more than two samples?
+Using multiple t-tests is possible, but the amount of calculation increases rapidly and the type II error rate would compound with each iteration.
+A new method was created to issue this problem.
+Enter \textbf{Analysis of Variance}.
+
+\subsubsection{Theory base}\label{anovaDef}
+Analysis Of Variance (frequently abbreviated ANOVA) was created to aid in comparing means when there are more than two levels of a single factor.
+
+In these kinds of problems, we are asked to compare some values. Let the example hypotheses be
+\begin{align*}
+   & H_0: \mu_1 = \mu_2 = \mu_3                  \\
+   & H_1: \mu_1 = \mu_2 = \mu_3 \text{ is false}
+\end{align*}
+which is another way of expressing that these 3 means come from the same overall population.
+
+Obviously the means cannot be exactly equal to the overall mean, but rather we want to know if each mean likely came from a larger overall population.
+In ANOVA, this idea is known as the Variability between the sample means.
+Each sample mean is a certain distance from the mean of the overall population, which is an expression of variance.
+ANOVA also requires Variability within the distributions, which is pretty self-explanatory.
+
+ANOVA is really a variability ratio
+\begin{align*}
+  \frac{Variance\ Between}{Variance\ Within}
+\end{align*}
+
+If the Variability between the means (distance from overall mean) in the numerator is relatively large compared to the Variability within the samples (internal spread) in the denominator, this ratio will be much larger than 1, meaning that at least one mean is an outlier and each distribution is narrow, distinct from each other.
+
+In the case that the Between variances and the Within variances are similar, means are fairly close to the overall mean or the distributions may overlap.
+
+The other case is where the Between variances is small and the Within variances is very large.
+We can think of this like 3 distributions that are very spread out internally and do not have a lot of distance from each other.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{anova.jpg}
+\end{figure}
+
+ANOVA really is f-distribution at its base.
+For the times when we need to use ANOVA for one factor, we use One-way ANOVA, which defines the F value as follows
+\begin{align*}
+  F = \frac{MSC}{MSE}
+\end{align*}
+with \(MSC\) is the Column mean sum of squares nad \(MSE\) is the Error mean sum of squares.
+
+The following formulas will aid in the calculation process
+\begin{align*}
+  df_{columns} & = C - 1 & MSC & = \frac{SSC}{df_{columns}} \\
+  df_{error}   & = N - C & MSE & = \frac{SSE}{df_{error}}   \\
+  df_{total}   & = N-1   & SST & = SSC+SSE
+\end{align*}
+where \(df = \text{degree of freedom}\), \(N = \text{total observations}\) and \(C = \text{number of columns}\).
+
+Here we define some syntactic sugar. Let \(y_{i\cdot}\) represent the total of the observations under factor \(i\) and \(\bar{y_{i\cdot}}\) represent the average of the observations under factor \(i\).
+Similarly, let \(y_{\cdot\cdot}\) represent the grand total of all observations and \(\bar{y_{\cdot\cdot}}\) represent the grand mean of all observations.
+\begin{align*}
+  y_{i\cdot}     & = \sum_{j}^{n} y_{ij}                  & \bar{y_{i\cdot}}     & = \frac{y_{i\cdot}}{n}              \\
+  y_{\cdot\cdot} & = \sum_{i=1}^{a} \sum_{j=1}^{n} y_{ij} & \bar{y_{\cdot\cdot}} & = \frac{y_{\cdot\cdot}}{a \times n}
+\end{align*}
+
+We now have \(SSC\) is the Sum of squares by column/factor, \(SSE\) is the Sum of squares within each observation and \(SST\) is the total sum of squares
+\begin{align*}
+   & SST = \sum_{i=1}^{C} \sum_{j=1}^{n_i} y_{ij}^2 - \frac{y_{\cdot\cdot}^2}{N}  \\
+   & SSC = \sum_{i=1}^{C} \frac{y_{i\cdot}^{2}}{n_i} - \frac{y_{\cdot\cdot}^2}{N} \\
+   & SSE = SST - SSC
+\end{align*}
+where \(n_i\) is the number of observations taken under treatment \(i\), i.e. \(N = \sum_{i=1}^{C} n_i\).
+
+\subsubsection{Analyze the data with R}
+We are comparing the blood lead levels, thus we want the null hypothesis to mean there is no difference in means.
+\begin{align*}
+   & H_0: \mu_1 = \mu_2 = \mu_3 = \mu_4 = \mu_5                  \\
+   & H_1: \text{Exist a mean that is not equal to the remainings}
+\end{align*}
+
+We start by preparing the data.
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+# Import the data
+data_file <- read.csv(file="resources/ex1.csv")
+  \end{minted}
+\end{mdframed}
+
+Then, we apply One-way ANOVA using the built-in function.
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+# Built-in one-way ANOVA
+av = aov(data_file$value~data_file$group)
+  \end{minted}
+\end{mdframed}
+
+Printing the data to the console for better visualization
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+# Results
+print(summary(av))
+print(paste("F Crit", qf(0.97,4,24)))
+ifelse(
+  summary(av)[[1]][["F value"]] > qf(0.97,4,24),
+  print("Reject H0 by comparing with critical F point"),
+  print("Fail to reject H0 by comparing with critical F point")
+)
+  \end{minted}
+\end{mdframed}
+
+Outputs
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
+                Df  Sum Sq  Mean Sq F value Pr(>F)
+data_file$group  4 0.00729 0.001822   1.583  0.211
+Residuals       24 0.02763 0.001151
+[1] "F Crit 3.21831004504591"
+[1] "Fail to reject H0 by comparing with critical point"
+  \end{minted}
+\end{mdframed}
+
+\subsubsection{Conclusion}
+We successfully obtain the F value and the F critical point.
+It is clear that \(1.583\) is not greater than \(3.218\), thus we fail to reject the null hypothesis.
+
+In other words, the blood samples statistically come from the same population.
+
+\subsubsection{Extra: Analyze the data verbosely with R}
+In this section, we will not use the built-in One-way ANOVA.
+
+Still, we begin by preparing the data.
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+# Import the data
+data_file <- read.csv(file="resources/ex1.csv")
+
+# Extract group names to data frame
+fr_gr_names <- data.frame(unique(data_file$group))
+
+# Variables that aid data manipulating
+fr_gr_sums <- aggregate(data_file$value~data_file$group,
+                        fr_gr_names, sum)
+fr_gr_quans <- aggregate(data_file$value~data_file$group,
+                          fr_gr_names, length)
+gr_sums <- fr_gr_sums$`data_file$value`
+gr_quans <- fr_gr_quans$`data_file$value`
+  \end{minted}
+\end{mdframed}
+
+Here are the calculations as stated in the theory base.
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+# Degree of freedom
+N <- length(data_file$value)
+C <- length(unique(data_file$group))
+df_c <- C - 1
+df_e <- N - C
+df_t <- N - 1
+
+# Sums of squares
+SST <- sum(data_file$value^2) - sum(data_file$value)^2 / N
+SSC <- sum(gr_sums^2 / gr_quans) - sum(data_file$value)^2 / N
+SSE = SST - SSC
+
+# Means of sums of squares
+MSC = SSC / df_c
+MSE = SSE / df_e
+F = MSC / MSE
+  \end{minted}
+\end{mdframed}
+
+Visualizing the data.
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+# Console output
+ifelse(
+  F > qf(0.97,4,24),
+  print("Reject H0 by comparing with critical F point"),
+  print("Fail to reject H0 by comparing with critical F point")
+)
+  \end{minted}
+\end{mdframed}
+
+Outputs:
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
+[1] "F 1.58278429023704"
+[1] "F Crit 3.21831004504591"
+[1] "Fail to reject H0 by comparing with critical F point"
+  \end{minted}
+\end{mdframed}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Problem 2}\label{p2}
+Data of skilled workers who are Swedish between two age groups dated back in 1930 are shown in the following table:
+
+\begin{center}
+  \begin{tabular}{ccccccc}
+    \toprule
+    \multirow{2}{*}{Age group} & \multicolumn{6}{c}{Income levels}                                   \\
+    \cmidrule(lr){2-7}
+                               & 0--1                              & 1--2 & 2--3 & 3--4 & 4--6 & >6  \\
+    \midrule
+    40--50                     & 71                                & 430  & 1072 & 1609 & 1178 & 158 \\
+    50--60                     & 54                                & 324  & 894  & 1202 & 903  & 112 \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+The required work is to verify if these two age groups are indistinguishable or not with the significance level \( \alpha = 5\% \).
+
+\subsubsection{Classification}
+The problem is classified as Testing for dependency of categorical variables.
+
+\subsubsection{Method for solving}
+By far, we have encountered many hypothesis testing methods such as testing for the mean to make sense in a given sample whether it is different, lesser or greater than the sample mean. But now we are facing a problem which involves showing the difference between groups in a given sample, none of the fore-mentioned are valid to apply. So we will approach this problem via a method called \textbf{Chi-Square test for independence}.
+
+\subsubsection{Theory base}\label{p2:theory}
+The Chi-Square test is a statistical procedure used by researchers to examine the differences between categorical variables in the same population. First we construct a null hypothesis which states that the categories in the sample are no different, and the alternative hypothesis which is the complement of that null hypothesis.
+\begin{align*}
+   & H_0: \text{Groups in the data sample are independent} \\
+   & H_1: \text{Groups in the data sample are dependent}
+\end{align*}
+
+We then calculate the Chi-Square statistic:
+\begin{align*}
+  \chi_0^2 = \sum_{i = 1}^{k} \frac{{(O_i - E_i)}^2}{E_i}
+\end{align*}
+
+Where \(O_i\) and \(E_i\) is the observed frequency and the expected frequency of the \(i^{th}\) category respectively.
+
+After obtaining the statistic we can compare to \(c\), the critical point of Chi-Square distribution. If it is bigger then we reject the null hypothesis, if it is not then we accept the hypothesis.
+
+An alternative method is to calculate the \(\text{p-value}\) of the sample and compare it to the significance level \( \alpha \). This is similar to other hypothesis testing method, of which the p-value does not exceed the significance level then we reject the null hypothesis and vice versa.
+
+\subsubsection{Analyze the data using R}
+Considering a null hypothesis with the alternative hypothesis:
+\begin{align*}
+   & H_0 : \text{The two groups have no relationship towards each other} \\
+   & H_1 : \text{There exists connection between these two groups}
+\end{align*}
+
+Using \(R\), we can apply Chi-Square test to the data sample. First, we import the data located in the \(resources\) folder, using the following simple commands:
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+# Import the data
+file_path <- 'resources/ex2.csv'
+income <- read.csv(file = file_path, sep = ",", row.names = 1, stringsAsFactors = FALSE, check.names = FALSE)
+data <- as.matrix(income)
+  \end{minted}
+\end{mdframed}
+
+After that, we compute the Chi-Square test using built-in functions. Then we can visualize the data for verification and further demonstration:
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+# Computing Chi-square
+chisq <- chisq.test(data)
+
+# Print observed counts & expected counts
+print(chisq$observed)
+print(round(chisq$expected, 2))
+  \end{minted}
+\end{mdframed}
+
+The output should be:
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
+> print(chisq$observed)
+      0-1 1-2  2-3  3-4  4-6  >6
+40-50  71 430 1072 1609 1178 158
+50-60  54 324  894 1202  903 112
+> print(round(chisq$expected, 2))
+        0-1    1-2     2-3     3-4     4-6     >6
+40-50 70.53 425.45 1109.33 1586.12 1174.22 152.35
+50-60 54.47 328.55  856.67 1224.88  906.78 117.65
+  \end{minted}
+\end{mdframed}
+
+The following step is to store value from the computed Chi-Square and calculate new required variables:
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+# Retrieving value
+alpha = 0.05
+X_squared = chisq$statistic # Statistic
+df = chisq$parameter        # Degree of freedom
+pval = chisq$p.value        # P-value
+c = qchisq(1 - alpha, df)    # Computing critical point
+  \end{minted}
+\end{mdframed}
+
+Finally, we compare the values to draw a conclusion which is to reject the null hypothesis or not:
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+# Check for rejection by comparing with critical point
+ifelse(
+  X_squared > c,
+  "Reject H0 by comparing with critical point",
+  "Accept H0 by comparing with critical point"
+)
+
+#Check for rejection by comparing with significance level
+ifelse(
+  pval < alpha,
+  "Reject H0 by comparing with significance level",
+  "Accept H0 by comparing with significance level"
+)
+  \end{minted}
+\end{mdframed}
+
+If we look closely, we can see that there are two \(ifelse\) statements. These represent the two methods to come to a conclusion that the null hypothesis is rejected or not. The output should be:
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
+"Accept H0 by comparing with critical point"
+[1] "Accept H0 by comparing with significance level"
+  \end{minted}
+\end{mdframed}
+
+\subsubsection{Conclusion}
+Observing the result above, both method yield the result which accepts null hypothesis, which means \(\chi_0^2 < \chi_{\alpha, v}^2\) and \(\text{p-value} > \alpha \) so we accept the null hypothesis \(H_0\).
+
+\textbf{In conclusion, the two age groups have identical income with the scale of income levels.}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Problem 3}
+
+\begin{center}
+  \begin{tabular}{cccccc}
+    \toprule
+    \multirow{2}{*}{Days of week} & \multicolumn{4}{c}{High School}             \\
+    \cmidrule(lr){2-5}
+                                  & A                               & B & C & D \\
+    \midrule
+    Monday                        & 5                               & 4 & 5 & 7 \\
+    Tuesday                       & 4                               & 5 & 3 & 2 \\
+    Wednesday                     & 4                               & 3 & 4 & 5 \\
+    Thursday                      & 4                               & 4 & 3 & 2 \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+We are to determine, at the significance level of \( \alpha = 3\% \), that there is any significant difference in the number of late arrivals among different days of the week.
+
+\subsubsection{Classification}
+The problem is classified as a dependency of an independent variable to the dependent variables.
+
+\subsubsection{Method for solving}
+For this problem, since there are two factors affecting to the hypothesis we will be using Two-Way ANOVA. Also, every block has a definite and assigned random value, we consider this as a Random Complete Block Design (RCDB) and therefore use RCBD to solve this Two-Way ANOVA problem.
+
+\subsubsection{Theory base}
+
+For definition of Analysis Of Variance (ANOVA) and One-Way ANOVA, refer to \hyperref[anovaDef]{\underline{Subsection 1.1.2 of Problem 2}}
+
+However, One-Way ANOVA solves the problem with only one factor affecting its end result. If there are multiple factors, One-way ANOVA yields to fail as it only calculates one factor as \(SSC\) while the other factor will be ignored. So although \(SST\) will remain the same, \(SSE\) will be too large due to lack of the second factor, giving false \(F0\) and thus false conclusion.
+
+Two-Way ANOVA solves the trivial problem as it uses a categorical variable - or blocks. What this means is that a third element is added when calculating \(SST\).
+
+\subsubsection{Analyze the data using R}
+
+As we are comparing differences between of days in the week, we assume the null hypothesis that there is no difference.
+
+\begin{align*}
+   & H_0: \tau_1. = \tau_2. = \tau_3. = \tau_4. = 0 \\
+   & H_1: \exists\tau_i. \neq 0
+\end{align*}
+
+From this point onwards, R can help us with the calculation.
+
+
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+#Import the data
+Ques3_dataset <- read.csv(file = "resources/ex3.csv")
+head(Ques3_dataset)
+
+#Create a two-way ANOVA
+av <- aov(value ~ block + column,data=Ques3_dataset)
+
+#Summarize two-way ANOVA
+print(summary(av))
+
+#Check and output if we can reject h0 or not
+ifelse(
+  summary(av)[[1]][["Pr(>F)"]] > qf(0.99,3,9),
+  print("Reject H0 since F >", qf(0.99,3,9)),
+  print("Fail to reject H0 since F <", qf(0.99,3,9))
+)
+  \end{minted}
+\end{mdframed}
+
+Outputs:
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
+            Df Sum Sq Mean Sq F value Pr(>F)
+block        3    9.5   3.167   2.036  0.179
+column       3    0.5   0.167   0.107  0.954
+Residuals    9   14.0   1.556
+    [1] "F Crit 6.991917"
+    [1] "Fail to reject H0 since F < 6.991917"
+  \end{minted}
+\end{mdframed}
+\subsubsection{Conclusion}
+From the output of the program, we can conclude that there is no difference between the number of late arrivals among different days of week.
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Problem 4}
+The thickness of nickel coating has been scientifically tested, the measurement in different plating tanks obtained from the experiment is described in the following data:
+\begin{center}
+  \begin{tabular}{cccc}
+    \toprule
+    \multirow{2}{*}{Thickness of nickel coating} & \multicolumn{3}{c}{Plating tank}            \\
+    \cmidrule(lr){2-4}
+                                                 & A                                & B   & C  \\
+    \midrule
+    4--8                                         & 32                               & 51  & 68 \\
+    8--12                                        & 123                              & 108 & 80 \\
+    12--16                                       & 10                               & 26  & 26 \\
+    16--20                                       & 41                               & 24  & 28 \\
+    20--24                                       & 19                               & 20  & 28 \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+With significance level \( \alpha = 5\% \), ``For every plating tank, we can have a relatively identical result of the coating thickness'' is the hypothesis that needs tested.
+
+\subsubsection{Classification}
+The problem is classified as Testing for dependency of categorical variables.
+
+\subsubsection{Method for solving}
+The problem requires us to test for the hypothesis which states that there exists no dependency between categories. This is similar to the fore-mentioned \hyperref[p2]{\underline{Problem 2}} so we will use \textbf{Chi-Square test for independence}.
+
+\subsubsection{Theory base}
+The theory of Chi-Square testing for dependency has already been defined in the \hyperref[p2:theory]{\underline{Theory base of Problem 2}}.
+
+\subsubsection{Analyze the data using R}
+For this problem, we construct a null hypothesis and the following alternative hypothesis:
+\begin{align*}
+   & H_0 : \text{The coating thickness and the type of plating tank used are independent} \\
+   & H_1 : \text{The type of plating tank is related to the thickness of nickel coating}
+\end{align*}
+
+For analyzing the data, we will use \(R\). The first step should be requiring the data from \(resources\) folder:
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+# Import the data
+file_path <- 'resources/ex4.csv'
+type <- read.csv(file = file_path, sep = ",", row.names = 1, stringsAsFactors = FALSE, check.names = FALSE)
+data <- as.matrix(type)
+  \end{minted}
+\end{mdframed}
+
+Next, with the help of existed packages from \(R\), we use the functions from those to calculate Chi-Square statistic and many others and then visualize the data:
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+# Computing Chi-square
+chisq <- chisq.test(data)
+
+# Print observed counts & expected counts
+print(chisq$observed)
+print(round(chisq$expected, 2))
+  \end{minted}
+\end{mdframed}
+
+The expected output:
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
+> print(chisq$observed)
+        A   B  C
+4-8    32  51 68
+8-12  123 108 80
+12-16  10  26 26
+16-20  41  24 28
+20-24  19  20 28
+> print(round(chisq$expected, 2))
+           A      B      C
+4-8    49.67  50.55  50.77
+8-12  102.30 104.12 104.58
+12-16  20.39  20.76  20.85
+16-20  30.59  31.14  31.27
+20-24  22.04  22.43  22.53
+  \end{minted}
+\end{mdframed}
+
+The following step includes extracting and calculate further data:
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+# Retrieving value
+alpha = 0.05
+X_squared = chisq$statistic # Statistic
+df = chisq$parameter        # Degree of freedom
+pval = chisq$p.value        # P-value
+c = qchisq(1 - alpha, df)    # Computing critical point
+  \end{minted}
+\end{mdframed}
+
+To wrap up the program, we compare the values to come to conclusion:
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+# Check for rejection by comparing with critical point
+ifelse(
+  X_squared > c,
+  "Reject H0 by comparing with critical point",
+  "Accept H0 by comparing with critical point"
+)
+
+#Check for rejection by comparing with significance level
+ifelse(
+  pval < alpha,
+  "Reject H0 by comparing with significance level",
+  "Accept H0 by comparing with significance level"
+)
+  \end{minted}
+\end{mdframed}
+
+The result after executing:
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
+"Reject H0 by comparing with critical point"
+[1] "Reject H0 by comparing with significance level"
+  \end{minted}
+\end{mdframed}
+
+\subsubsection{Conclusion}
+The output above gives us the result of both method being rejecting the null hypothesis. This means \(\chi_0^2 < \chi_{\alpha, v}^2\) and \(\text{p-value} > \alpha \) are true so we wrap up the problem.
+
+\textbf{To summarize the problem, the hypothesis which states that there are no relationship between thickness of nickel coating and type of plating tank is false}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Project 2}
+\subsection{Problem 1}
+
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+    print("Cặc Khôi ngắn!");
+  \end{minted}
+\end{mdframed}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Problem 2}
+
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+    print("Cặc Khôi ngắn!");
+  \end{minted}
+\end{mdframed}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Problem 3}
+
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+    print("Cặc Khôi ngắn!");
+  \end{minted}
+\end{mdframed}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Problem 4}
+
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+    print("Cặc Khôi ngắn!");
+  \end{minted}
+\end{mdframed}
+
+\end{document}
