@@ -9,6 +9,7 @@ chisq <- chisq.test(data)
 # Print observed counts & expected counts
 print(chisq$observed)
 print(round(chisq$expected, 2))
+print(chisq)
 
 # Retrieving value
 alpha = 0.05
