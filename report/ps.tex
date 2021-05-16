@@ -121,17 +121,10 @@
     \toprule
     \textbf{No.} & \textbf{Full name}    & \textbf{Student ID} & \textbf{Problems} & \textbf{Percentage of work} \\
     \midrule
-    1            & Lưu Nguyễn Hoàng Minh & 1952845             & Exercise 1: e     & \multirow{2}{*}{100\%}      \\
-                 &                       &                     & Exercise 2: b     &                             \\
-    \midrule
-    2            & Nguyễn Hoàng          & 1952255             & Exercise 1: e     & \multirow{2}{*}{100\%}      \\
-                 &                       &                     & Exercise 2: b     &                             \\
-    \midrule
-    3            & Nguyễn Chính Khôi     & 1952793             & Exercise 1: c     & \multirow{2}{*}{100\%}      \\
-                 &                       &                     & Exercise 6        &                             \\
-    \midrule
-    4            & Nguyễn Duy Thành      & 1952456             & Exercise 1: d, e  & \multirow{2}{*}{100\%}      \\
-                 &                       &                     & Exercise 6        &                             \\
+    1            & Lưu Nguyễn Hoàng Minh & 1952845             & Project 2         & 100\%                       \\
+    2            & Nguyễn Hoàng          & 1952255             & Project 1         & 100\%                       \\
+    3            & Nguyễn Chính Khôi     & 1952793             & Project 1         & 100\%                       \\
+    4            & Nguyễn Duy Thành      & 1952456             & Project 1         & 100\%                       \\
     \bottomrule
   \end{tabular}
 \end{center}
@@ -145,19 +138,19 @@
 Records for the blood lead levels of workers in five buildings of a battery factory are taken as follows:
 
 \begin{center}
-  \begin{tabular}{cccccc}
+  \begin{tabular}{c*{5}S[table-format=1.2]}
     \toprule
-    \multirow{2}{*}{Observation} & \multicolumn{5}{c}{Factor level}                             \\
+    \multirow{2}{*}{Observation} & \multicolumn{5}{c}{Factor level}                                                                                                     \\
     \cmidrule(lr){2-6}
-                                 & F1                               & F2   & F3   & F4   & F5   \\
+                                 & \multicolumn{1}{c}{F1}           & \multicolumn{1}{c}{F2} & \multicolumn{1}{c}{F3} & \multicolumn{1}{c}{F4} & \multicolumn{1}{c}{F5} \\
     \midrule
-    1                            & 0.25                             & 0.22 & 0.25 & 0.31 & 0.22 \\
-    2                            & 0.28                             & 0.25 & 0.26 & 0.33 & 0.28 \\
-    3                            & 0.32                             & 0.24 & 0.28 & 0.30 & 0.28 \\
-    4                            & 0.22                             & 0.28 & 0.25 & 0.29 & 0.25 \\
-    5                            & 0.22                             & 0.31 & 0.22 & 0.25 & 0.30 \\
-    6                            &                                  & 0.21 & 0.28 &      &      \\
-    7                            &                                  & 0.22 & 0.31 &      &      \\
+    1                            & 0.25                             & 0.22                   & 0.25                   & 0.31                   & 0.22                   \\
+    2                            & 0.28                             & 0.25                   & 0.26                   & 0.33                   & 0.28                   \\
+    3                            & 0.32                             & 0.24                   & 0.28                   & 0.30                   & 0.28                   \\
+    4                            & 0.22                             & 0.28                   & 0.25                   & 0.29                   & 0.25                   \\
+    5                            & 0.22                             & 0.31                   & 0.22                   & 0.25                   & 0.30                   \\
+    6                            &                                  & 0.21                   & 0.28                   &                        &                        \\
+    7                            &                                  & 0.22                   & 0.31                   &                        &                        \\
     \bottomrule
   \end{tabular}
 \end{center}
@@ -177,7 +170,7 @@ Enter \textbf{Analysis of Variance}.
 \subsubsection{Theory base}\label{anovaDef}
 Analysis Of Variance (frequently abbreviated ANOVA) was created to aid in comparing means when there are more than two levels of a single factor.
 
-In these kinds of problems, we are asked to compare some values. Let the example hypotheses be
+In these kinds of problems, we are asked to compare some values. Let the example hypotheses be:
 \begin{align*}
    & H_0: \mu_1 = \mu_2 = \mu_3                  \\
    & H_1: \mu_1 = \mu_2 = \mu_3 \text{ is false}
@@ -189,7 +182,7 @@ In ANOVA, this idea is known as the Variability between the sample means.
 Each sample mean is a certain distance from the mean of the overall population, which is an expression of variance.
 ANOVA also requires Variability within the distributions, which is pretty self-explanatory.
 
-ANOVA is really a variability ratio
+ANOVA is really a variability ratio:
 \begin{align*}
   \frac{Variance\ Between}{Variance\ Within}
 \end{align*}
@@ -205,29 +198,31 @@ We can think of this like 3 distributions that are very spread out internally an
   \includegraphics[width=0.8\textwidth]{anova.jpg}
 \end{figure}
 
-ANOVA really is f-distribution at its base.
-For the times when we need to use ANOVA for one factor, we use One-way ANOVA, which defines the F value as follows
+ANOVA really is f-distribution at its core.
+For the times when we need to use ANOVA on one factor, we use One-way ANOVA, which defines the F value as follows:
 \begin{align*}
-  F = \frac{MSC}{MSE}
+  F = \frac{MSF}{MSE}
 \end{align*}
-with \(MSC\) is the Column mean sum of squares nad \(MSE\) is the Error mean sum of squares.
+with \(MSF\) is the Factor mean square and \(MSE\) is the Error mean square.
 
-The following formulas will aid in the calculation process
+We will further expand \(MSF\) and \(MSE\) into these components:
 \begin{align*}
-  df_{columns} & = C - 1 & MSC & = \frac{SSC}{df_{columns}} \\
-  df_{error}   & = N - C & MSE & = \frac{SSE}{df_{error}}   \\
-  df_{total}   & = N-1   & SST & = SSC+SSE
+  df_{factors} & = F - 1 & MSF & = \frac{SSF}{df_{factors}} \\
+  df_{error}   & = N - F & MSE & = \frac{SSE}{df_{error}}   \\
+  df_{total}   & = N - 1 & SST & = SSF + SSE
 \end{align*}
-where \(df = \text{degree of freedom}\), \(N = \text{total observations}\) and \(C = \text{number of columns}\).
+where \(df = \text{degree of freedom}\), \(N = \text{total observations}\) and \(F = \text{number of factors}\).
 
 Here we define some syntactic sugar. Let \(y_{i\cdot}\) represent the total of the observations under factor \(i\) and \(\bar{y_{i\cdot}}\) represent the average of the observations under factor \(i\).
 Similarly, let \(y_{\cdot\cdot}\) represent the grand total of all observations and \(\bar{y_{\cdot\cdot}}\) represent the grand mean of all observations.
+
+For example:
 \begin{align*}
   y_{i\cdot}     & = \sum_{j}^{n} y_{ij}                  & \bar{y_{i\cdot}}     & = \frac{y_{i\cdot}}{n}              \\
   y_{\cdot\cdot} & = \sum_{i=1}^{a} \sum_{j=1}^{n} y_{ij} & \bar{y_{\cdot\cdot}} & = \frac{y_{\cdot\cdot}}{a \times n}
 \end{align*}
 
-We now have \(SSC\) is the Sum of squares by column/factor, \(SSE\) is the Sum of squares within each observation and \(SST\) is the total sum of squares
+We now have \(SSF\) is the Factor sum of squares, \(SSE\) is the Error sum of squares and \(SST\) is the Total sum of squares
 \begin{align*}
    & SST = \sum_{i=1}^{C} \sum_{j=1}^{n_i} y_{ij}^2 - \frac{y_{\cdot\cdot}^2}{N}  \\
    & SSC = \sum_{i=1}^{C} \frac{y_{i\cdot}^{2}}{n_i} - \frac{y_{\cdot\cdot}^2}{N} \\
@@ -236,72 +231,23 @@ We now have \(SSC\) is the Sum of squares by column/factor, \(SSE\) is the Sum o
 where \(n_i\) is the number of observations taken under treatment \(i\), i.e. \(N = \sum_{i=1}^{C} n_i\).
 
 \subsubsection{Analyze the data with R}
-We are comparing the blood lead levels, thus we want the null hypothesis to mean there is no difference in means.
+We are comparing the blood lead levels, thus we want the null hypothesis to conclude that there is no difference in means.
 \begin{align*}
-   & H_0: \mu_1 = \mu_2 = \mu_3 = \mu_4 = \mu_5                  \\
+   & H_0: \mu_1 = \mu_2 = \mu_3 = \mu_4 = \mu_5                   \\
    & H_1: \text{Exist a mean that is not equal to the remainings}
 \end{align*}
 
-We start by preparing the data.
+We will be solving this problem step by step with the aid of \(R\).
+Firstly, we prepare the data.
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
 # Import the data
-data_file <- read.csv(file="resources/ex1.csv")
-  \end{minted}
-\end{mdframed}
-
-Then, we apply One-way ANOVA using the built-in function.
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
-  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
-# Built-in one-way ANOVA
-av = aov(data_file$value~data_file$group)
-  \end{minted}
-\end{mdframed}
-
-Printing the data to the console for better visualization
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
-  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
-# Results
-print(summary(av))
-print(paste("F Crit", qf(0.97,4,24)))
-ifelse(
-  summary(av)[[1]][["F value"]] > qf(0.97,4,24),
-  print("Reject H0 by comparing with critical F point"),
-  print("Fail to reject H0 by comparing with critical F point")
-)
-  \end{minted}
-\end{mdframed}
-
-Outputs
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
-  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
-                Df  Sum Sq  Mean Sq F value Pr(>F)
-data_file$group  4 0.00729 0.001822   1.583  0.211
-Residuals       24 0.02763 0.001151
-[1] "F Crit 3.21831004504591"
-[1] "Fail to reject H0 by comparing with critical point"
-  \end{minted}
-\end{mdframed}
-
-\subsubsection{Conclusion}
-We successfully obtain the F value and the F critical point.
-It is clear that \(1.583\) is not greater than \(3.218\), thus we fail to reject the null hypothesis.
-
-In other words, the blood samples statistically come from the same population.
-
-\subsubsection{Extra: Analyze the data verbosely with R}
-In this section, we will not use the built-in One-way ANOVA.
-
-Still, we begin by preparing the data.
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
-  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
-# Import the data
-data_file <- read.csv(file="resources/ex1.csv")
+data_file <- read.csv(file="ex1.csv")
 
 # Extract group names to data frame
 fr_gr_names <- data.frame(unique(data_file$group))
 
-# Variables that aid data manipulating
+# Variables that aid calculations
 fr_gr_sums <- aggregate(data_file$value~data_file$group,
                         fr_gr_names, sum)
 fr_gr_quans <- aggregate(data_file$value~data_file$group,
@@ -311,48 +257,130 @@ gr_quans <- fr_gr_quans$`data_file$value`
   \end{minted}
 \end{mdframed}
 
-Here are the calculations as stated in the theory base.
+We begin with the component variables, then slowly make our way to F value.
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
 # Degree of freedom
 N <- length(data_file$value)
-C <- length(unique(data_file$group))
-df_c <- C - 1
-df_e <- N - C
+F <- length(unique(data_file$group))
+df_f <- F - 1
+df_e <- N - F
 df_t <- N - 1
 
 # Sums of squares
 SST <- sum(data_file$value^2) - sum(data_file$value)^2 / N
-SSC <- sum(gr_sums^2 / gr_quans) - sum(data_file$value)^2 / N
-SSE = SST - SSC
+SSF <- sum(gr_sums^2 / gr_quans) - sum(data_file$value)^2 / N
+SSE <- SST - SSF
 
 # Means of sums of squares
-MSC = SSC / df_c
-MSE = SSE / df_e
-F = MSC / MSE
+MSF <- SSF / df_f
+MSE <- SSE / df_e
+
+F <- MSF / MSE
   \end{minted}
 \end{mdframed}
 
-Visualizing the data.
+We now use some unicorn magic to obtain the output
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
 # Console output
-ifelse(
-  F > qf(0.97,4,24),
-  print("Reject H0 by comparing with critical F point"),
-  print("Fail to reject H0 by comparing with critical F point")
-)
+cat("Sums", gr_sums, "\n")
+cat("Averages", gr_sums / gr_quans, "\n")
+cat("Overall sum", sum(gr_sums), "\n")
+cat("Overall mean", mean(gr_sums / gr_quans), "\n")
+cat("df_f", df_f, "\n")
+cat("df_e", df_e, "\n")
+cat("df_t", df_t, "\n")
+cat("SSF", SSF, "\n")
+cat("SSE", SSE, "\n")
+cat("SST", SST, "\n")
+cat("MSF", MSF, "\n")
+cat("MSE", MSE, "\n")
+cat("F", F, "\n")
   \end{minted}
 \end{mdframed}
 
-Outputs:
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
-[1] "F 1.58278429023704"
-[1] "F Crit 3.21831004504591"
-[1] "Fail to reject H0 by comparing with critical F point"
+Sums 1.29 1.73 1.85 1.48 1.33
+Averages 0.258 0.2471429 0.2642857 0.296 0.266
+Overall sum 7.68
+Overall mean 0.2662857
+df_f 4
+df_e 24
+df_t 28
+SSF 0.007289852
+SSE 0.02763429
+SST 0.03492414
+MSF 0.001822463
+MSE 0.001151429
+F 1.582784
   \end{minted}
 \end{mdframed}
+
+Let's arrange this mess into a table for some reason.
+\begin{center}
+  \begin{tabular}{cccccccccc}
+    \toprule
+    Factor level & \multicolumn{7}{c}{Observation} & Sum  & Average                                                \\
+    \midrule
+    F1           & 0.25                            & 0.28 & 0.32    & 0.22 & 0.22 &      &      & 1.29 & 0.258     \\
+    F2           & 0.22                            & 0.25 & 0.24    & 0.28 & 0.31 & 0.21 & 0.22 & 1.73 & 0.2471429 \\
+    F3           & 0.25                            & 0.26 & 0.28    & 0.25 & 0.22 & 0.28 & 0.31 & 1.85 & 0.2642857 \\
+    F4           & 0.31                            & 0.33 & 0.30    & 0.29 & 0.25 &      &      & 1.47 & 0.296     \\
+    F5           & 0.22                            & 0.28 & 0.28    & 0.25 & 0.30 &      &      & 1.33 & 0.266     \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+\begin{center}
+  \begin{tabular}{lcccc}
+    \toprule
+    Source of variation & Df & Sum of squares & Mean square & F        \\
+    \midrule
+    Factor level        & 4  & 0.007289852    & 0.001822463 &          \\
+    Error               & 24 & 0.02763429     & 0.001151429 &          \\
+    Total               & 28 & 0.03492414     &             & 1.582784 \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+Congratulations! We have calculated the F value of this problem \(F = 1.582784\).
+Moreover, the same results can be obtained using the built in One-way ANOVA function.
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+# Import the data
+data_file <- read.csv(file="resources/ex1.csv")
+
+# Built-in one-way ANOVA
+av = aov(data_file$value~data_file$group)
+
+# Results
+print(summary(av))
+  \end{minted}
+\end{mdframed}
+
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
+                Df  Sum Sq  Mean Sq F value Pr(>F)
+data_file$group  4 0.00729 0.001822   1.583  0.211
+Residuals       24 0.02763 0.001151
+  \end{minted}
+\end{mdframed}
+
+\subsubsection{Conclusion}
+The statistical appendix doesn't have an entry for \(f(0.03, 4, 24)\), thus we called for some help from \(R\).
+Due to the way it is implemented, we use \(qf(0.97, 4, 24)\) but not \(qf(0.03, 4, 24)\).
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+> cat("F Crit", qf(0.97,4,24), "\n")
+  \end{minted}
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
+F Crit 3.21831
+  \end{minted}
+\end{mdframed}
+
+Because \(F < F crit\), i.e. \(1.582784 < 3.21831\), we fail to reject the null hypothesis.
+In other words, the blood samples are statistically the same.
 
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -390,7 +418,7 @@ The Chi-Square test is a statistical procedure used by researchers to examine th
 We then calculate the Chi-Square statistic:
 \begin{align*}
   \chi_0^2 = \sum_{i = 1}^{k} \frac{{(O_i - E_i)}^2}{E_i}
-\end{align*}
+\end{align*}\label{chi:stat}
 
 Where \(O_i\) and \(E_i\) is the observed frequency and the expected frequency of the \(i^{th}\) category respectively.
 
@@ -398,7 +426,7 @@ After obtaining the statistic we can compare to \(c\), the critical point of Chi
 
 An alternative method is to calculate the \(\text{p-value}\) of the sample and compare it to the significance level \( \alpha \). This is similar to other hypothesis testing method, of which the p-value does not exceed the significance level then we reject the null hypothesis and vice versa.
 
-\subsubsection{Analyze the data using R}
+\subsubsection{Analyze the data using R}\label{p2:anal}
 Considering a null hypothesis with the alternative hypothesis:
 \begin{align*}
    & H_0 : \text{The two groups have no relationship towards each other} \\
@@ -424,6 +452,7 @@ chisq <- chisq.test(data)
 # Print observed counts & expected counts
 print(chisq$observed)
 print(round(chisq$expected, 2))
+print(chisq)
   \end{minted}
 \end{mdframed}
 
@@ -438,8 +467,35 @@ The output should be:
         0-1    1-2     2-3     3-4     4-6     >6
 40-50 70.53 425.45 1109.33 1586.12 1174.22 152.35
 50-60 54.47 328.55  856.67 1224.88  906.78 117.65
+> print(chisq)
+
+	Pearson's Chi-squared test
+
+data:  data
+X-squared = 4.2675, df = 5, p-value = 0.5116
   \end{minted}
 \end{mdframed}
+
+To calculate the Chi-Square statistic, first we construct an expected frequency table based on the observed data through this formula:
+\begin{align*}
+  O_{ij} = \frac{SR_i * SC_j}{ST}
+\end{align*}
+
+Where \(SR_i\) is the sum of \(i^{th}\) row, \(SC_j\) is the sum of \(j^{th}\) column and \(ST\) is the total sum of the observation. The expected frequency table:
+\begin{center}
+  \begin{tabular}{ccccccc}
+    \toprule
+    \multirow{2}{*}{Age group} & \multicolumn{6}{c}{Income levels --- Expected frequency}                                                          \\
+    \cmidrule(lr){2-7}
+                               & 0--1                                                     & 1--2     & 2--3      & 3--4     & 4--6      & >6       \\
+    \midrule
+    40--50                     & 70.5320                                                  & 425.4492 & 1109.3278 & 1586.124 & 1174.2173 & 152.3492 \\
+    50--60                     & 54.468                                                   & 328.5508 & 856.6722  & 1224.876 & 906.7827  & 117.6508 \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+Afterwards we use \hyperref[chi:stat]{\underline{this formula}} to calculate the statistic, we will get a value of \( \chi_0^2 = 4.2675\). Compare this to the value \( X-squared \) printed in the result, we can see it is identically the same.
 
 The following step is to store value from the computed Chi-Square and calculate new required variables:
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
@@ -489,12 +545,13 @@ Observing the result above, both method yield the result which accepts null hypo
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Problem 3}
 
+This table below views the number of late arrivals in four high schools on different days.
+
 \begin{center}
   \begin{tabular}{cccccc}
     \toprule
     \multirow{2}{*}{Days of week} & \multicolumn{4}{c}{High School}             \\
-    \cmidrule(lr){2-5}
-                                  & A                               & B & C & D \\
+    \cmidrule(lr){2-5}            & A                               & B & C & D \\
     \midrule
     Monday                        & 5                               & 4 & 5 & 7 \\
     Tuesday                       & 4                               & 5 & 3 & 2 \\
@@ -504,46 +561,129 @@ Observing the result above, both method yield the result which accepts null hypo
   \end{tabular}
 \end{center}
 
-We are to determine, at the significance level of \( \alpha = 3\% \), that there is any significant difference in the number of late arrivals among different days of the week.
+We are to determine, at the significance level of \( \alpha = 1\% \), if there is a significant difference in the number of late arrivals among different days of the week.
 
 \subsubsection{Classification}
 The problem is classified as a dependency of an independent variable to the dependent variables.
 
 \subsubsection{Method for solving}
-For this problem, since there are two factors affecting to the hypothesis we will be using Two-Way ANOVA. Also, every block has a definite and assigned random value, we consider this as a Random Complete Block Design (RCDB) and therefore use RCBD to solve this Two-Way ANOVA problem.
+For this problem, since there are two factors affecting to the hypothesis we will be using Two-Way ANOVA.\
+Also, every block has a definite and assigned random value, we consider this as a Random Complete Block Design (RCDB) and therefore RCBD is used to solve this Two-Way ANOVA problem.
 
 \subsubsection{Theory base}
 
-For definition of Analysis Of Variance (ANOVA) and One-Way ANOVA, refer to \hyperref[anovaDef]{\underline{Subsection 1.1.2 of Problem 2}}
+For definition of Analysis Of Variance (ANOVA) and One-Way ANOVA, refer to \hyperref[anovaDef]{\underline{Theory base of Problem 1}}.
 
-However, One-Way ANOVA solves the problem with only one factor affecting its end result. If there are multiple factors, One-way ANOVA yields to fail as it only calculates one factor as \(SSC\) while the other factor will be ignored. So although \(SST\) will remain the same, \(SSE\) will be too large due to lack of the second factor, giving false \(F0\) and thus false conclusion.
+However, One-Way ANOVA solves the problem with only one factor affecting its end result. If there are two factors, One-way ANOVA yields to fail as it only calculates one factor as \(SSC\) while the other factor will be ignored. So although \(SST\) will remain the same, \(SSE\) will be too large due to lack of the second factor, giving false \(F0\) and thus false conclusion.
 
-Two-Way ANOVA solves the trivial problem as it uses a categorical variable - or blocks. What this means is that a third element is added when calculating \(SST\).
+Two-Way ANOVA solves the trivial problem as it uses a categorical variable --- or blocks --- to calculate the missing second factor. This means a third element, called \(SSB\), is added when formulating \(SST\),  calculates the sum of squares of blocks:
 
+\begin{align*}
+  SSB = \frac{1}{a}.\sum_{j=1}^{b}(y^2_{.j} - \frac{y^2_{..}}{ab})
+\end{align*}
+
+With \(a = \text{number of columns}\) and \(b = \text{number of blocks}\).
+
+Therefore, the formula of sum of squares \(SST\) in a Two-Way ANOVA is:
+
+\begin{align*}
+  SST = SSC + SSB + SSE
+\end{align*}
+
+And since \(SST\) and \(SSC\) does not change, \(SSE\) can be calculated as in One-Way ANOVA with implementation of \(SSB\).
+
+\begin{align*}
+  SST = \sum_{i=1}^{a}\sum_{j=1}^{b}(y^2_{ij} - \frac{y^2_{..}}{ab}) \\
+  SSC = \frac{1}{b}.\sum_{i=1}^{a}(y^2_{i.} - \frac{y^2_{..}}{ab})   \\
+  SSE = SST - SSC - SSB
+\end{align*}
+
+Now that we have successfully recalculate \(SSE\) with implementation of the second factor, we can calculate \(\text{degree of free dom df}\) and \(\text{mean of sum of  squares MS}\) like in One-Way ANOVA.\
+
+\begin{align*}
+  df_{columns} & = a - 1      & MSC & = \frac{SSC}{df_{columns}} \\
+  df_{blocks}  & = b - 1      & MSB & = \frac{SSb}{df_{blocks}}  \\
+  df_{error}   & = (a-1)(b-1) & MSE & = \frac{SSE}{df_{error}}   \\
+  df_{total}   & = N-1
+\end{align*}
+
+where  \(a = \text{number of columns}\) and \(b = \text{number of blocks}\).
+
+And eventually calculate our final result for hypothesis testing
+
+\begin{align*}
+  F = \frac{MSC}{MSE}
+\end{align*}
 \subsubsection{Analyze the data using R}
 
 As we are comparing differences between of days in the week, we assume the null hypothesis that there is no difference.
 
 \begin{align*}
-   & H_0: \tau_1. = \tau_2. = \tau_3. = \tau_4. = 0 \\
-   & H_1: \exists\tau_i. \neq 0
+  H_0: \mu_1. = \mu_2. = \mu_3. = \mu_4. \\
+  H_1: \exists\mu_i. \neq 0
 \end{align*}
+
+The next step is to determine the number of columns and blocks as well as significant level of the hypothesis based on the given data.
+
+\begin{center}
+  \begin{tabular}{lcccccc}
+    \toprule
+    Days of week & \multicolumn{4}{c}{High School} & Sum & Average                  \\
+    \cmidrule(lr){2-5}
+                 & A                               & B   & C       & D              \\
+    \midrule
+    Monday       & 5                               & 4   & 5       & 7  & 21 & 5.25 \\
+    Tuesday      & 4                               & 5   & 3       & 2  & 14 & 3.5  \\
+    Wednesday    & 4                               & 3   & 4       & 5  & 16 & 4    \\
+    Thursday     & 4                               & 4   & 3       & 2  & 13 & 3.25 \\
+    \midrule
+    Sum          & 17                              & 16  & 15      & 16             \\
+    Average      & 4.25                            & 4   & 3.75    & 4              \\
+    \bottomrule
+  \end{tabular}
+\end{center}
 
 From this point onwards, R can help us with the calculation.
 
+Firstly, we prepare the data
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+  #Import the data
+Ques3_dataset <- read.csv(file = "resources/ex3.csv")
+head(Ques3_dataset)
+    \end{minted}
+\end{mdframed}
+
+Then, applying Two-way ANOVA using the built-in function
 
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
-#Import the data
-Ques3_dataset <- read.csv(file = "resources/ex3.csv")
-head(Ques3_dataset)
-
 #Create a two-way ANOVA
-av <- aov(value ~ block + column,data=Ques3_dataset)
+av <- aov(value ~ day_of_week + highschool,data=Ques3_dataset)
+    \end{minted}
+\end{mdframed}
 
+Printing the data of to the console
+
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
 #Summarize two-way ANOVA
 print(summary(av))
+    \end{minted}
+\end{mdframed}
 
+Checking the critical value. Note that we are working on a 4x4 table with significance level of \(\alpha = 1\%\). Therefore \(a = b = 3, \alpha = 0.01\)
+
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+  #Check critical value
+  print(qf(0.99,3,9)
+    \end{minted}
+\end{mdframed}
+
+And finally check if we can reject the null hypothesis or not
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
 #Check and output if we can reject h0 or not
 ifelse(
   summary(av)[[1]][["Pr(>F)"]] > qf(0.99,3,9),
@@ -557,15 +697,19 @@ Outputs:
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
             Df Sum Sq Mean Sq F value Pr(>F)
-block        3    9.5   3.167   2.036  0.179
-column       3    0.5   0.167   0.107  0.954
+day_of_week  3    9.5   3.167   2.036  0.179
+highschool   3    0.5   0.167   0.107  0.954
 Residuals    9   14.0   1.556
-    [1] "F Crit 6.991917"
-    [1] "Fail to reject H0 since F < 6.991917"
+[1] "6.991917"
+[1] "Fail to reject H0 since F < 6.991917"
   \end{minted}
 \end{mdframed}
+
 \subsubsection{Conclusion}
-From the output of the program, we can conclude that there is no difference between the number of late arrivals among different days of week.
+From the output of the program, we have 2 F values, since we only work on different days of week, the first Fvalue will be our subject of comparison. And from the output of the program, we conclude that \(2.036 < 6.991917\), we fail to reject \(H_0\)
+
+\textbf{In other words, there is no difference in the number of late arrvals among different days of the week.}
+
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Problem 4}
@@ -643,8 +787,34 @@ The expected output:
 12-16  20.39  20.76  20.85
 16-20  30.59  31.14  31.27
 20-24  22.04  22.43  22.53
+> print(chisq)
+
+	Pearson's Chi-squared test
+
+data:  data
+X-squared = 37.667, df = 8, p-value = 8.674e-06
   \end{minted}
 \end{mdframed}
+
+Doing this manually, the expected frequency table after applying the formula mentioned in \hyperref[p2:anal]{\underline{Analyzing stage of Problem 2}} will be:
+
+\begin{center}
+  \begin{tabular}{cccc}
+    \toprule
+    \multirow{2}{*}{Thickness of nickel coating} & \multicolumn{3}{c}{Plating tank}                       \\
+    \cmidrule(lr){2-4}
+                                                 & A                                & B        & C        \\
+    \midrule
+    4--8                                         & 49.6711                          & 50.5541  & 50.7749  \\
+    8--12                                        & 102.3026                         & 104.1213 & 104.5760 \\
+    12--16                                       & 20.3947                          & 20.7573  & 20.8480  \\
+    16--20                                       & 30.5921                          & 31.1360  & 31.2719  \\
+    20--24                                       & 22.0395                          & 22.4313  & 22.5292  \\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+Moving on to finding the statistic, using \hyperref[chi:stat]{\underline{this formula}} the value will be \( \chi_0^2 = 37.6670\). The result obtained through analyzing with R and the result here are similar, close to being alike.
 
 The following step includes extracting and calculate further data:
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
