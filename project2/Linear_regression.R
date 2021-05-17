@@ -1,18 +1,13 @@
+ ######### 1. Import data #########
 # set working directory
-setwd("D:/HCMUT/HK202/Statistics and Probabilities/BTL")
+# setwd("D:/HCMUT/HK202/Statistics and Probabilities/BTL")
 
 # install packages to use
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(pacman, rio)
 
-# # Load previouse working space
-# load("D:/HCMUT/HK202/Statistics and Probabilities/BTL/.RData")
-
 # import file
 grade_csv <- import("grade.csv")
-
-# show the first 6 rows data
-head(grade_csv)
 
 # choose useful information
 grade_csv <- subset(grade_csv,select =c(sex,age,studytime,failures,higher,absences,G1,G2,G3))
@@ -20,26 +15,44 @@ grade_csv <- subset(grade_csv,select =c(sex,age,studytime,failures,higher,absenc
 # show the table after choose subset
 head(grade_csv)
 
+######## 2. Data cleaning ########
 # Number of data has NA value
 sum(is.na(grade_csv))
 
 # check which column has NA value
 names(which(colSums(is.na(grade_csv)) > 0))
 
-# Only column G2 has NA value
+#> Only column G2 has NA value
 # Replace the value by the mean of this column
-grade_csv[is.na(grade_csv[,"G2"]), "G2"] <- mean(grade_csv[,"G2"], na.rm = TRUE)
 
+meanG2 <- mean(grade_csv[,"G2"], na.rm = TRUE)
+grade_csv[is.na(grade_csv[,"G2"]), "G2"] <- mean(grade_csv[,"G2"], na.rm = TRUE)
 
 # After cleaning number of data has NA value is 0
 sum(is.na(grade_csv))
 
-head(grade_csv)
+# Check relationship between G1 & G3
+plot(grade_csv$G1, grade_csv$G3, xlab = "First period grade - G1", ylab = "Final period grade - G3", main = "Relationship between G1 & G3", pch = 19)
+# Remove outliers between G1 & G3
+grade_csv <- grade_csv[!(grade_csv$G3 == 0 & grade_csv$G1 >= 5),]
+# Re-plot after removed
+plot(grade_csv$G1, grade_csv$G3, xlab = "First period grade - G1", ylab = "Final period grade - G3", main = "Relationship between G1 & G3", pch = 19)
 
-######### Descriptive Statistics #########
+# Check relationship between G2 & G3
+plot(grade_csv$G2, grade_csv$G3, xlab = "Second period grade - G2", ylab = "Final period grade - G3", main = "Relationship between G2 & G3", pch = 19)
+# Remove outliers between G2 & G3
+grade_csv <- grade_csv[!((grade_csv$G3 == 5 | grade_csv$G3 > 15) & grade_csv$G2 == meanG2),]
+# Re-plot after removed
+plot(grade_csv$G2, grade_csv$G3, xlab = "Second period grade - G2", ylab = "Final period grade - G3", main = "Relationship between G2 & G3", pch = 19)
+
+
+######### 3. Descriptive Statistics #########
+# Transformation
+pairs(G3~G1, grade_csv)
+pairs(G3~G2, grade_csv)
 
 # Descriptive statistic for continuous variable
-con_var <- c(6,7,8,9)
+con_var <- c(7,8,9)
 
 mean <- apply(grade_csv[,con_var], 2, mean)
 medium <- apply(grade_csv[,con_var], 2, median)
@@ -57,6 +70,7 @@ cat_age <- table(grade_csv$age)
 cat_studytime <- table(grade_csv$studytime)
 cat_failures <- table(grade_csv$failures)
 cat_higher <- table(grade_csv$higher)
+cat_absences <- table(grade_csv$absences)
 
 
 cat_sex
@@ -64,6 +78,7 @@ cat_age
 cat_studytime
 cat_failures
 cat_higher
+cat_absences
 
 
 ######### Plotting graph #########
@@ -90,29 +105,14 @@ pairs(G3~absences,grade_csv)
 linearModel <- lm(G3~sex + age + studytime + failures + higher + absences + G1 + G2, data=grade_csv)
 summary(linearModel)
 
+linear1 <- lm(G3~ G1 +G2, data=grade_csv)
+summary(linear1)
+
+anova(linearModel, linear1)
+
 ######## selecting model properly #########
-
-## model with all dependent variable
-modelAll <- lm(G3~sex + age + studytime + failures + higher + absences + G1 + G2, data=grade_csv)
-
-## model reject sex, studytime, failures, higher
-modelreject <- lm(G3 ~ age + absences + G1 + G2, data = grade_csv)
-summary(modelreject)
-anova(modelAll, modelreject)
-
-## model reject "higher" variable
-model_without_higher <- lm(G3~sex + age + studytime + failures + absences + G1 + G2, data=grade_csv)
-summary(model_without_higher)
-anova(modelAll,model_without_higher)
-
-
-## model reject "failures" variable
-model_without_failures_higher <- lm(G3~sex + age + studytime + absences + G1 + G2, data=grade_csv)
-anova(model_without_higher, model_without_failures_higher)
-
-summary(model_without_failures_higher)
-
-plot(model_without_failures_higher)
+plot(linearModel)
+plot(linear1)
 
 ####### Predict ##########
 
@@ -134,7 +134,7 @@ library(tidyverse)
 
 ## create a new table and add predict column to a new table
 new_grade <- grade_csv %>% select(sex, age, studytime, failures, higher, absences, G1, G2, G3)
-predict_grade <- predict(model_without_failures_higher)
+predict_grade <- predict(linear1)
 new_grade <- cbind(new_grade, predict_grade)
 
 ## check fail or pass of prediction in new table
@@ -152,4 +152,5 @@ Output
 
 # Clear environment
 rm(list = ls())
+
 
