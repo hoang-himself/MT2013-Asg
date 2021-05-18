@@ -112,51 +112,46 @@ pairs(G3~absences,grade_csv)
 
 ############ 4. Fitting linear regression model ###############
 
-# Create model
+# create model
 linearModel <- lm(G3~sex + age + studytime + failures + higher + absences + G1 + G2, data=grade_csv)
 summary(linearModel)
 
-
-######## Selecting model properly #########
+###
+plot(resid(linearModel))
 plot(linearModel)
-plot(linear1)
 
 ####### Predict ##########
 
-## Function to check fail or pass
+## function to check fail or pass
 failpass <- function(x){
   if(x >= 10) return("Pass")
   else        return("Fail")
 }
 
-## Check G3 column fail or pass and add it to column evaluate
-evaluate <- c(apply(grade_csv["G3"], MARGIN = 1, FUN = failpass))
-grade_csv <- cbind(grade_csv, evaluate)
-View(grade_csv)
-
-
 ## Install package 
 if (!require("tidyverse")) install.packages("tidyverse")
 library(tidyverse)
 
-## Create a new table and add predict column to a new table
-new_grade <- grade_csv %>% select(sex, age, studytime, failures, higher, absences, G1, G2, G3)
-predict_grade <- predict(linear1)
+## create a new table and add predict column to a new table
+new_grade <- grade_csv
+predict_grade <- predict(linearModel)
 new_grade <- cbind(new_grade, predict_grade)
-
-## Check fail or pass of prediction in new table
+## check fail or pass of prediction in new table
 evaluate <- c(apply(new_grade["predict_grade"], MARGIN = 1, FUN = failpass))
 new_grade <- cbind(new_grade, evaluate)
 
 
-## Create a data frame to compare between G3(real data) and predicted value
+## Check G3 column fail or pass and add it to column evaluate
+evaluate <- c(apply(grade_csv["G3"], MARGIN = 1, FUN = failpass))
+grade_csv <- cbind(grade_csv, evaluate)
+
+## create a data frame to compare between G3(real data) and predicted value
 evaluate1 = prop.table(table(grade_csv$evaluate == "Pass"))
 evaluate2 = prop.table(table(new_grade$evaluate == "Pass"))
 Output = data.frame(cbind(evaluate1, evaluate2))
 colnames(Output)=c("Real","Predicted")
 rownames(Output)=c("Fail", "Pass")
 Output
-
 
 
 
