@@ -119,9 +119,7 @@ pairs(G3 ~ absences, grade_csv)
 ############ 4. Fitting linear regression model ###############
 
 ####### --------> create model <-----------
-M_all <-
-  lm(G3 ~ sex + age + studytime + failures + higher + absences + G1 + G2, data =
-       grade_csv)
+M_all <- lm(G3 ~ sex + age + studytime + failures + higher + absences + G1 + G2, data = grade_csv)
 summary(M_all)
 
 ## plot residual for model conclude all factor are importance
