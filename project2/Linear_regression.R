@@ -19,14 +19,15 @@ grade_csv <- subset(grade_csv,select =c(sex,age,studytime,failures,higher,absenc
 head(grade_csv)
 
 ######## 2. Data cleaning ########
-# Number of data have NA value
+# Number of data has NA value
 sum(is.na(grade_csv))
 
-# Saving the columns that have NA value
-remCol = which(colSums(is.na(grade_csv)) > 0)
+# check which column has NA value
+remCols = names(which(colSums(is.na(grade_csv)) > 0))
 
-# Removing the columns with NA value
-grade_csv <- grade_csv[!is.na(grade_csv[, remCol]),]
+#> Only column G2 has NA value
+# Replace the value by the mean of this column
+grade_csv <- grade_csv[!is.na(grade_csv[,remCols]),]
 
 # After cleaning number of data has NA value is 0
 sum(is.na(grade_csv))
@@ -50,31 +51,33 @@ drop <- c("sex=F","higher=no")
 grade_csv <- grade_csv[,!(colnames(grade_csv) %in% drop)]
 
 
+
 ### ----- b. Descriptive statistic ----- ###
 
-# For continuous variable
+# ----> For continuous variable <----
 
 # choose column
 con_var <- c(7,8,9)
-# calculate some value
+# calculate some statistic value
 mean <- apply(grade_csv[,con_var], 2, mean)
 medium <- apply(grade_csv[,con_var], 2, median)
 sd <- apply(grade_csv[,con_var], 2, sd)
 min <- apply(grade_csv[,con_var], 2, min)
 max <- apply(grade_csv[,con_var], 2, max)
-
+# put it all data frame
 con_table <- t(data.frame(mean,medium,sd,min,max))
 
 con_table
 
-# Descriptive statistic for categorical variable
+
+
+# ----> For discrete variable <----
 cat_sex <- table(grade_csv$sex)
 cat_age <- table(grade_csv$age)
 cat_studytime <- table(grade_csv$studytime)
 cat_failures <- table(grade_csv$failures)
 cat_higher <- table(grade_csv$higher)
 cat_absences <- table(grade_csv$absences)
-
 
 cat_sex
 cat_age
