@@ -58,7 +58,7 @@ con_table
 
 
 
-# ----> For discrete variable <----
+# ----> For categorical variable <----
 cat_sex <- table(grade_csv$sex)
 cat_age <- table(grade_csv$age)
 cat_studytime <- table(grade_csv$studytime)
