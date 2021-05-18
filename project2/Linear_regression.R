@@ -103,11 +103,11 @@ grid.arrange(
 
 # Box plot of G3 for sex, age, studytime, failures, higher
 grid.arrange(
-  ggplot(grade_csv, aes(x=as.character(sex), y=G3 )) + geom_boxplot(),
-  ggplot(grade_csv, aes(x=as.character(age), y=G3)) + geom_boxplot(),
-  ggplot(grade_csv, aes(x=as.character(studytime), y=G3)) + geom_boxplot(),
-  ggplot(grade_csv, aes(x=as.character(failures), y=G3)) + geom_boxplot(),
-  ggplot(grade_csv, aes(x=as.character(higher), y=G3)) + geom_boxplot(),
+  ggplot(grade_csv, aes(x=as.character(sex), y=G3 )) + geom_boxplot() + scale_x_discrete(name="Sex"),
+  ggplot(grade_csv, aes(x=as.character(age), y=G3)) + geom_boxplot() + scale_x_discrete(name="Age"),
+  ggplot(grade_csv, aes(x=as.character(studytime), y=G3)) + geom_boxplot() + scale_x_discrete(name="Study time"),
+  ggplot(grade_csv, aes(x=as.character(failures), y=G3)) + geom_boxplot() + scale_x_discrete(name="Failures"),
+  ggplot(grade_csv, aes(x=as.character(higher), y=G3)) + geom_boxplot() + scale_x_discrete(name="Higher"),
   ncol = 2
 )
 boxplot(G3 ~ sex, grade_csv, main = "Distribution of G3 for each sex")
