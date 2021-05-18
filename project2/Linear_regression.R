@@ -19,17 +19,16 @@ grade_csv <- subset(grade_csv,select =c(sex,age,studytime,failures,higher,absenc
 head(grade_csv)
 
 ######## 2. Data cleaning ########
-# Number of data has NA value
+# Number of data have NA value
 sum(is.na(grade_csv))
 
-# check which column has NA value
+# Saving the columns that have NA value
 remCols = names(which(colSums(is.na(grade_csv)) > 0))
 
-#> Only column G2 has NA value
-# Replace the value by the mean of this column
-grade_csv <- grade_csv[!is.na(grade_csv[,remCols]),]
+# Removing the columns with NA value
+grade_csv <- grade_csv[!is.na(grade_csv[, remCols]),]
 
-# After cleaning number of data has NA value is 0
+# After cleaning number of data have NA value is 0
 sum(is.na(grade_csv))
 
 
@@ -40,17 +39,6 @@ sum(is.na(grade_csv))
 # transformation to use or not use transformation
 pairs(G3~G1, grade_csv)
 pairs(G3~G2, grade_csv)
-
-# Transform categorical variable
-if (!require("onehot")) install.packages("onehot")
-library(onehot)
-#encode math data
-encoder <- onehot(grade_csv, stringsAsFactors = TRUE)
-grade_csv <- predict(encoder, grade_csv)
-drop <- c("sex=F","higher=no")
-grade_csv <- grade_csv[,!(colnames(grade_csv) %in% drop)]
-
-
 
 ### ----- b. Descriptive statistic ----- ###
 
@@ -87,10 +75,21 @@ cat_higher
 cat_absences
 
 
-######### Plotting graph #########
+### ----- c. Plotting graph ----- ###
 
 # hist for G3
-hist(grade_csv$G3, main="Distribution of G3", xlab = "Score", breaks = 20)
+grid.arrange(
+  ggplot(grade_csv, aes(sex)) + geom_histogram(stat = "count"),
+  ggplot(grade_csv, aes(age)) + geom_histogram(stat = "count"),
+  ggplot(grade_csv, aes(studytime)) + geom_histogram(stat = "count"),
+  ggplot(grade_csv, aes(failures)) + geom_histogram(stat = "count"),
+  ggplot(grade_csv, aes(higher)) + geom_histogram(stat = "count"),
+  ggplot(grade_csv, aes(absences)) + geom_histogram(stat = "count"),
+  ggplot(grade_csv, aes(G1)) + geom_histogram(stat = "count"),
+  ggplot(grade_csv, aes(G2)) + geom_histogram(stat = "count"),
+  ggplot(grade_csv, aes(G3)) + geom_histogram(stat = "count"),
+  
+  ncol=3)
 
 # boxplot of G3 for studytime, failures, higher
 boxplot(G3~sex, grade_csv, main = "Distribution of G3 for each sex")
@@ -98,13 +97,52 @@ boxplot(G3~studytime, grade_csv, main = "Distribution of G3 for each studytime")
 boxplot(G3~failures, grade_csv, main = "Distribution of G3 for each failures")
 boxplot(G3~higher, grade_csv, main = "Distribution of G3 for each higher")
 
-
-
 # pair graph
 pairs(G3~G2,grade_csv)
 pairs(G3~G1,grade_csv)
 pairs(G3~age,grade_csv)
 pairs(G3~absences,grade_csv)
+
+
+# install some package to plot more beautiful
+if (!require("gridExtra")) install.packages("gridExtra")
+library(gridExtra)
+if (!require("ggplot2")) install.packages("ggplot2")
+library(ggplot2)
+
+grid.arrange(
+             ggplot(grade_csv, aes(sex)) + geom_histogram(stat = "count"),
+             ggplot(grade_csv, aes(age)) + geom_histogram(stat = "count"),
+             ggplot(grade_csv, aes(studytime)) + geom_histogram(stat = "count"),
+             ggplot(grade_csv, aes(failures)) + geom_histogram(stat = "count"),
+             ggplot(grade_csv, aes(higher)) + geom_histogram(stat = "count"),
+             ggplot(grade_csv, aes(absences)) + geom_histogram(stat = "count"),
+             ggplot(grade_csv, aes(G1)) + geom_histogram(stat = "count"),
+             ggplot(grade_csv, aes(G2)) + geom_histogram(stat = "count"),
+             ggplot(grade_csv, aes(G3)) + geom_histogram(stat = "count"),
+             
+             ncol=3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ############ Fitting linear regression line ###############
