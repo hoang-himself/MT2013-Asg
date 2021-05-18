@@ -103,22 +103,20 @@ boxplot(G3~failures, grade_csv, main = "Distribution of G3 for each failures")
 boxplot(G3~higher, grade_csv, main = "Distribution of G3 for each higher")
 
 # pair graph
-pairs(G3~G2,grade_csv, pch = 19)
-pairs(G3~G1,grade_csv, pch = 19)
-pairs(G3~age,grade_csv, pch = 19)
-pairs(G3~absences,grade_csv, pch = 19)
+pairs(G3~G2,grade_csv)
+pairs(G3~G1,grade_csv)
+pairs(G3~age,grade_csv)
+pairs(G3~absences,grade_csv)
 
 
 
 
-############ Fitting linear regression line ###############
+############ 4. Fitting linear regression model ###############
+
+# create model
 linearModel <- lm(G3~sex + age + studytime + failures + higher + absences + G1 + G2, data=grade_csv)
 summary(linearModel)
 
-linear1 <- lm(G3~ G1 +G2, data=grade_csv)
-summary(linear1)
-
-anova(linearModel, linear1)
 
 ######## selecting model properly #########
 plot(linearModel)
