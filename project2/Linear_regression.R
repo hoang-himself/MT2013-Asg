@@ -19,44 +19,44 @@ grade_csv <- subset(grade_csv,select =c(sex,age,studytime,failures,higher,absenc
 head(grade_csv)
 
 ######## 2. Data cleaning ########
-# Number of data has NA value
+# Number of data have NA value
 sum(is.na(grade_csv))
 
-# check which column has NA value
-names(which(colSums(is.na(grade_csv)) > 0))
+# Saving the columns that have NA value
+remCol = which(colSums(is.na(grade_csv)) > 0)
 
-#> Only column G2 has NA value
-# Replace the value by the mean of this column
-grade_csv <- grade_csv[!is.na(grade_csv$G2),]
+# Removing the columns with NA value
+grade_csv <- grade_csv[!is.na(grade_csv[, remCol]),]
 
 # After cleaning number of data has NA value is 0
 sum(is.na(grade_csv))
 
 
 ######### 3. Descriptive Statistics #########
-# Transformation
+### ----- a. Transformation ----- ###
+
+# check correlation between G1~G3 G2~G3 to decide which 
+# transformation to use or not use transformation
 pairs(G3~G1, grade_csv)
 pairs(G3~G2, grade_csv)
 
+# Transform categorical variable
+if (!require("onehot")) install.packages("onehot")
+library(onehot)
+#encode math data
+encoder <- onehot(grade_csv, stringsAsFactors = TRUE)
+grade_csv <- predict(encoder, grade_csv)
+drop <- c("sex=F","higher=no")
+grade_csv <- grade_csv[,!(colnames(grade_csv) %in% drop)]
 
-if (!require("gridExtra")) install.packages("gridExtra")
-library(gridExtra)
-install.packages("ggplot2")
-library("ggplot2")
-grid.arrange(ggplot(grade_csv, aes(sex)) + geom_histogram(stat = "count"),
-             ggplot(grade_csv, aes(age)) + geom_histogram(stat = "count"),
-             ggplot(grade_csv, aes(studytime)) + geom_histogram(stat = "count"),
-             ggplot(grade_csv, aes(failures)) + geom_histogram(stat = "count"),
-             ggplot(grade_csv, aes(higher)) + geom_histogram(stat = "count"),
-             ggplot(grade_csv, aes(absences)) + geom_histogram(stat = "count"),
-             ggplot(grade_csv, aes(G1)) + geom_histogram(stat = "count"),
-             ggplot(grade_csv, aes(G2)) + geom_histogram(stat = "count"),
-             ggplot(grade_csv, aes(G3)) + geom_histogram(stat = "count"),
-             ncol=3)
 
-# Descriptive statistic for continuous variable
+### ----- b. Descriptive statistic ----- ###
+
+# For continuous variable
+
+# choose column
 con_var <- c(7,8,9)
-
+# calculate some value
 mean <- apply(grade_csv[,con_var], 2, mean)
 medium <- apply(grade_csv[,con_var], 2, median)
 sd <- apply(grade_csv[,con_var], 2, sd)
