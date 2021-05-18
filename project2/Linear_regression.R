@@ -45,15 +45,15 @@ pairs(G3~G2, grade_csv)
 # ----> For continuous variable <----
 
 # choose column
-con_var <- c(7,8,9)
+con_var <- c(6,7,8,9)
 # calculate some statistic value
 mean <- apply(grade_csv[,con_var], 2, mean)
-medium <- apply(grade_csv[,con_var], 2, median)
+median <- apply(grade_csv[,con_var], 2, median)
 sd <- apply(grade_csv[,con_var], 2, sd)
 min <- apply(grade_csv[,con_var], 2, min)
 max <- apply(grade_csv[,con_var], 2, max)
 # put it all data frame
-con_table <- t(data.frame(mean,medium,sd,min,max))
+con_table <- t(data.frame(mean,median,sd,min,max))
 
 con_table
 
@@ -65,19 +65,23 @@ cat_age <- table(grade_csv$age)
 cat_studytime <- table(grade_csv$studytime)
 cat_failures <- table(grade_csv$failures)
 cat_higher <- table(grade_csv$higher)
-cat_absences <- table(grade_csv$absences)
 
 cat_sex
 cat_age
 cat_studytime
 cat_failures
 cat_higher
-cat_absences
 
 
 ### ----- c. Plotting graph ----- ###
 
-# hist for G3
+# install some package to plot more beautiful
+if (!require("gridExtra")) install.packages("gridExtra")
+library(gridExtra)
+if (!require("ggplot2")) install.packages("ggplot2")
+library(ggplot2)
+
+# histogram plot
 grid.arrange(
   ggplot(grade_csv, aes(sex)) + geom_histogram(stat = "count"),
   ggplot(grade_csv, aes(age)) + geom_histogram(stat = "count"),
@@ -91,56 +95,18 @@ grid.arrange(
   
   ncol=3)
 
-# boxplot of G3 for studytime, failures, higher
+# box plot of G3 for sex, age, studytime, failures, higher
 boxplot(G3~sex, grade_csv, main = "Distribution of G3 for each sex")
+boxplot(G3~age, grade_csv, main = "Distribution of G3 for each age")
 boxplot(G3~studytime, grade_csv, main = "Distribution of G3 for each studytime")
 boxplot(G3~failures, grade_csv, main = "Distribution of G3 for each failures")
 boxplot(G3~higher, grade_csv, main = "Distribution of G3 for each higher")
 
 # pair graph
-pairs(G3~G2,grade_csv)
-pairs(G3~G1,grade_csv)
-pairs(G3~age,grade_csv)
-pairs(G3~absences,grade_csv)
-
-
-# install some package to plot more beautiful
-if (!require("gridExtra")) install.packages("gridExtra")
-library(gridExtra)
-if (!require("ggplot2")) install.packages("ggplot2")
-library(ggplot2)
-
-grid.arrange(
-             ggplot(grade_csv, aes(sex)) + geom_histogram(stat = "count"),
-             ggplot(grade_csv, aes(age)) + geom_histogram(stat = "count"),
-             ggplot(grade_csv, aes(studytime)) + geom_histogram(stat = "count"),
-             ggplot(grade_csv, aes(failures)) + geom_histogram(stat = "count"),
-             ggplot(grade_csv, aes(higher)) + geom_histogram(stat = "count"),
-             ggplot(grade_csv, aes(absences)) + geom_histogram(stat = "count"),
-             ggplot(grade_csv, aes(G1)) + geom_histogram(stat = "count"),
-             ggplot(grade_csv, aes(G2)) + geom_histogram(stat = "count"),
-             ggplot(grade_csv, aes(G3)) + geom_histogram(stat = "count"),
-             
-             ncol=3)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+pairs(G3~G2,grade_csv, pch = 19)
+pairs(G3~G1,grade_csv, pch = 19)
+pairs(G3~age,grade_csv, pch = 19)
+pairs(G3~absences,grade_csv, pch = 19)
 
 
 
