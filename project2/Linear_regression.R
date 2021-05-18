@@ -100,7 +100,16 @@ grid.arrange(
   ncol = 3
 )
 
+
 # Box plot of G3 for sex, age, studytime, failures, higher
+grid.arrange(
+  ggplot(grade_csv, aes(x=as.character(sex), y=G3 )) + geom_boxplot(),
+  ggplot(grade_csv, aes(x=as.character(age), y=G3)) + geom_boxplot(),
+  ggplot(grade_csv, aes(x=as.character(studytime), y=G3)) + geom_boxplot(),
+  ggplot(grade_csv, aes(x=as.character(failures), y=G3)) + geom_boxplot(),
+  ggplot(grade_csv, aes(x=as.character(higher), y=G3)) + geom_boxplot(),
+  ncol = 2
+)
 boxplot(G3 ~ sex, grade_csv, main = "Distribution of G3 for each sex")
 boxplot(G3 ~ age, grade_csv, main = "Distribution of G3 for each age")
 boxplot(G3 ~ studytime, grade_csv, main = "Distribution of G3 for each studytime")
@@ -118,7 +127,7 @@ pairs(G3 ~ absences, grade_csv)
 
 ############ 4. Fitting linear regression model ###############
 
-####### --------> create model <-----------
+####### --------> create model full factor <-----------
 M_all <- lm(G3 ~ sex + age + studytime + failures + higher + absences + G1 + G2, data = grade_csv)
 summary(M_all)
 
@@ -126,41 +135,70 @@ summary(M_all)
 par(mfrow = c(2, 2))
 plot(M_all)
 
+
 ####### -------> model just contain age, absences, G1, G2 <----------
 M1 <- lm(G3 ~ age + absences + G1 + G2, data = grade_csv)
 summary(M1)
-par(mfrow = c(2, 2))
-plot(M1)
-
 # anova between M_all and M1
-anova(M_all, M1) # there no difference between M_all and M1 if we remove some factor
+anova(M_all, M1) # there no difference between M_all and M1 when we remove some factor
 # -> choose M1 because it simpler than M_all
 
-####### --------->
+
+####### ---------> from model M1 we remove factor age <---------
+M2 <- lm(G3 ~absences + G1 + G2, data = grade_csv)
+summary(M2)
+# anova between M1 and M2
+anova(M1, M2) # there difference between M1 and M2 when we remove age factor
+### ===> age affect the final grade
 
 
-####### Predict ##########
+####### ---------> from model M1 we remove factor absences <---------
+M3 <- lm(G3 ~age + G1 + G2, data = grade_csv)
+summary(M3)
+# anova between M1 and M3
+anova(M1, M3) # there difference between M1 and M3 when we remove age factor
+### ===> absences affect the final grade
 
-## function to check fail or pass
+
+####### ---------> from model M1 we remove factor G1 <---------
+M4 <- lm(G3 ~age + absences + G2, data = grade_csv)
+summary(M4)
+# anova between M1 and M4
+anova(M1, M4) # there difference between M1 and M4 when we remove age factor
+### ===> G1 affect the final grade
+
+
+####### ---------> from model M1 we remove factor G2 <---------
+M5 <- lm(G3 ~age + absences + G1, data = grade_csv)
+summary(M5)
+par(mfrow = c(2, 2))
+plot(M5)
+
+# anova between M1 and M5
+anova(M1, M5) # there difference between M1 and M5 when we remove age factor
+### ===> G2 affect the final grade
+
+
+### ================>>>> decided to choose model M1 <<<<================ ###
+
+
+
+####### 5. Prediction ##########
+
+## we want to create a function to check fail or pass of student
 failpass <- function(x) {
   if (x >= 10)
-    return("Pass")
+    return("Pass") # x >= 10 Pass
   else
-    return("Fail")
+    return("Fail") # x < 10 Fail
 }
-
-## Install package
-if (!require("tidyverse"))
-  install.packages("tidyverse")
-library(tidyverse)
 
 ## create a new table and add predict column to a new table
 new_grade <- grade_csv
 predict_grade <- predict(linearModel)
 new_grade <- cbind(new_grade, predict_grade)
 ## check fail or pass of prediction in new table
-evaluate <-
-  c(apply(new_grade["predict_grade"], MARGIN = 1, FUN = failpass))
+evaluate <- c(apply(new_grade["predict_grade"], MARGIN = 1, FUN = failpass))
 new_grade <- cbind(new_grade, evaluate)
 
 
