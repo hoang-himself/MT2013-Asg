@@ -1,4 +1,7 @@
- ######### 1. Import data #########
+# Clear environment
+rm(list = ls()) 
+
+######### 1. Import data #########
 # set working directory
 # setwd("D:/HCMUT/HK202/Statistics and Probabilities/BTL")
 
@@ -24,32 +27,32 @@ names(which(colSums(is.na(grade_csv)) > 0))
 
 #> Only column G2 has NA value
 # Replace the value by the mean of this column
-
-meanG2 <- mean(grade_csv[,"G2"], na.rm = TRUE)
-grade_csv[is.na(grade_csv[,"G2"]), "G2"] <- mean(grade_csv[,"G2"], na.rm = TRUE)
+grade_csv <- grade_csv[!is.na(grade_csv$G2),]
 
 # After cleaning number of data has NA value is 0
 sum(is.na(grade_csv))
-
-# Check relationship between G1 & G3
-plot(grade_csv$G1, grade_csv$G3, xlab = "First period grade - G1", ylab = "Final period grade - G3", main = "Relationship between G1 & G3", pch = 19)
-# Remove outliers between G1 & G3
-grade_csv <- grade_csv[!(grade_csv$G3 == 0 & grade_csv$G1 >= 5),]
-# Re-plot after removed
-plot(grade_csv$G1, grade_csv$G3, xlab = "First period grade - G1", ylab = "Final period grade - G3", main = "Relationship between G1 & G3", pch = 19)
-
-# Check relationship between G2 & G3
-plot(grade_csv$G2, grade_csv$G3, xlab = "Second period grade - G2", ylab = "Final period grade - G3", main = "Relationship between G2 & G3", pch = 19)
-# Remove outliers between G2 & G3
-grade_csv <- grade_csv[!((grade_csv$G3 == 5 | grade_csv$G3 > 15) & grade_csv$G2 == meanG2),]
-# Re-plot after removed
-plot(grade_csv$G2, grade_csv$G3, xlab = "Second period grade - G2", ylab = "Final period grade - G3", main = "Relationship between G2 & G3", pch = 19)
 
 
 ######### 3. Descriptive Statistics #########
 # Transformation
 pairs(G3~G1, grade_csv)
 pairs(G3~G2, grade_csv)
+
+
+if (!require("gridExtra")) install.packages("gridExtra")
+library(gridExtra)
+install.packages("ggplot2")
+library("ggplot2")
+grid.arrange(ggplot(grade_csv, aes(sex)) + geom_histogram(stat = "count"),
+             ggplot(grade_csv, aes(age)) + geom_histogram(stat = "count"),
+             ggplot(grade_csv, aes(studytime)) + geom_histogram(stat = "count"),
+             ggplot(grade_csv, aes(failures)) + geom_histogram(stat = "count"),
+             ggplot(grade_csv, aes(higher)) + geom_histogram(stat = "count"),
+             ggplot(grade_csv, aes(absences)) + geom_histogram(stat = "count"),
+             ggplot(grade_csv, aes(G1)) + geom_histogram(stat = "count"),
+             ggplot(grade_csv, aes(G2)) + geom_histogram(stat = "count"),
+             ggplot(grade_csv, aes(G3)) + geom_histogram(stat = "count"),
+             ncol=3)
 
 # Descriptive statistic for continuous variable
 con_var <- c(7,8,9)
@@ -150,7 +153,6 @@ colnames(Output)=c("Real","Predicted")
 rownames(Output)=c("Fail", "Pass")
 Output
 
-# Clear environment
-rm(list = ls())
+
 
 
