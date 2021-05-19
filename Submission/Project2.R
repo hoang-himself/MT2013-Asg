@@ -11,7 +11,7 @@ if (!require("readxl"))
 library("readxl")
 
 # Import the data
-grade_csv <- read_excel("data.xlsx", sheet = "Sheet2")
+grade_csv <- read_excel("data.xlsx", sheet = "Sheet1")
 
 
 # Choose useful information
