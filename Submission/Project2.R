@@ -5,13 +5,14 @@ rm(list = ls())
 # Set working directory
 # setwd("D:/HCMUT/HK202/Statistics and Probabilities/BTL")
 
-# Install packages to use
-if (!require("pacman"))
-  install.packages("pacman")
-pacman::p_load(pacman, rio)
+rm(list = ls())
+if (!require("readxl"))
+  install.packages("readxl")
+library("readxl")
 
-# Import file
-grade_csv <- import("grade.csv")
+# Import the data
+grade_csv <- read_excel("data.xlsx", sheet = "Sheet2")
+
 
 # Choose useful information
 grade_csv <- subset(grade_csv, select = c(sex, age, studytime, failures, higher, absences, G1, G2, G3))
