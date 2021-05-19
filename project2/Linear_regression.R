@@ -14,9 +14,7 @@ pacman::p_load(pacman, rio)
 grade_csv <- import("grade.csv")
 
 # Choose useful information
-grade_csv <-
-  subset(grade_csv,
-         select = c(sex, age, studytime, failures, higher, absences, G1, G2, G3))
+grade_csv <- subset(grade_csv, select = c(sex, age, studytime, failures, higher, absences, G1, G2, G3))
 
 # Show the table after choose subset
 head(grade_csv)
@@ -110,11 +108,6 @@ grid.arrange(
   ggplot(grade_csv, aes(x=as.character(higher), y=G3)) + geom_boxplot() + scale_x_discrete(name="Higher"),
   ncol = 2
 )
-boxplot(G3 ~ sex, grade_csv, main = "Distribution of G3 for each sex")
-boxplot(G3 ~ age, grade_csv, main = "Distribution of G3 for each age")
-boxplot(G3 ~ studytime, grade_csv, main = "Distribution of G3 for each studytime")
-boxplot(G3 ~ failures, grade_csv, main = "Distribution of G3 for each failures")
-boxplot(G3 ~ higher, grade_csv, main = "Distribution of G3 for each higher")
 
 # Pair graph
 pairs(G3 ~ G2, grade_csv)
@@ -131,10 +124,6 @@ pairs(G3 ~ absences, grade_csv)
 M_all <- lm(G3 ~ sex + age + studytime + failures + higher + absences + G1 + G2, data = grade_csv)
 summary(M_all)
 
-## plot residual for model conclude all factor are importance
-par(mfrow = c(2, 2))
-plot(M_all)
-
 
 ####### -------> model just contain age, absences, G1, G2 <----------
 M1 <- lm(G3 ~ age + absences + G1 + G2, data = grade_csv)
@@ -150,36 +139,11 @@ summary(M2)
 # anova between M1 and M2
 anova(M1, M2) # there difference between M1 and M2 when we remove age factor
 ### ===> age affect the final grade
-
-
-####### ---------> from model M1 we remove factor absences <---------
-M3 <- lm(G3 ~age + G1 + G2, data = grade_csv)
-summary(M3)
-# anova between M1 and M3
-anova(M1, M3) # there difference between M1 and M3 when we remove age factor
-### ===> absences affect the final grade
-
-
-####### ---------> from model M1 we remove factor G1 <---------
-M4 <- lm(G3 ~age + absences + G2, data = grade_csv)
-summary(M4)
-# anova between M1 and M4
-anova(M1, M4) # there difference between M1 and M4 when we remove age factor
-### ===> G1 affect the final grade
-
-
-####### ---------> from model M1 we remove factor G2 <---------
-M5 <- lm(G3 ~age + absences + G1, data = grade_csv)
-summary(M5)
-par(mfrow = c(2, 2))
-plot(M5)
-
-# anova between M1 and M5
-anova(M1, M5) # there difference between M1 and M5 when we remove age factor
-### ===> G2 affect the final grade
-
-
 ### ================>>>> decided to choose model M1 <<<<================ ###
+
+## plot the residual plot
+plot(M1)
+
 
 
 
@@ -195,11 +159,11 @@ failpass <- function(x) {
 
 ## create a new table and add predict column to a new table
 new_grade <- grade_csv
-predict_grade <- predict(linearModel)
-new_grade <- cbind(new_grade, predict_grade)
+predict_G3 <- predict(M1)
+new_grade <- cbind(new_grade, predict_G3)
 ## check fail or pass of prediction in new table
-evaluate <- c(apply(new_grade["predict_grade"], MARGIN = 1, FUN = failpass))
-new_grade <- cbind(new_grade, evaluate)
+predict_evaluate <- c(apply(new_grade["predict_G3"], MARGIN = 1, FUN = failpass))
+new_grade <- cbind(new_grade, predict_evaluate)
 
 
 ## Check G3 column fail or pass and add it to column evaluate
@@ -208,7 +172,7 @@ grade_csv <- cbind(grade_csv, evaluate)
 
 ## create a data frame to compare between G3(real data) and predicted value
 evaluate1 = prop.table(table(grade_csv$evaluate == "Pass"))
-evaluate2 = prop.table(table(new_grade$evaluate == "Pass"))
+evaluate2 = prop.table(table(new_grade$predict_evaluate == "Pass"))
 Output = data.frame(cbind(evaluate1, evaluate2))
 colnames(Output) = c("Real", "Predicted")
 rownames(Output) = c("Fail", "Pass")
