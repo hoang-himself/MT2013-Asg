@@ -107,7 +107,7 @@
 
   \begin{figure}[h!]
     \begin{center}
-      \includegraphics[width=3cm]{hcmut.png}
+      \includegraphics[width=0.5\textwidth]{hcmut.png}
     \end{center}
   \end{figure}
 
@@ -205,10 +205,10 @@ Analysis Of Variance (frequently abbreviated ANOVA) was created to aid in compar
 
 In these kinds of problems, we are asked to compare some values. Let the example hypotheses be:
 \begin{align*}
-  H_0: & \mu_1 = \mu_2    \\
-  H_1: & \mu_1 \neq \mu_2
+  H_0: & \mu_1 = \mu_2 = \mu_3    \\
+  H_1: & \exists \mu_i \neq \mu_k
 \end{align*}
-which is another way of expressing that these 2 means come from the same grand population.
+which is another way of expressing that these 3 means come from the same grand population.
 
 Obviously the means cannot be exactly equal to the overall mean, but rather we want to know if each mean likely came from a larger overall population.
 In ANOVA, this idea is known as the Variability between the sample means.
@@ -257,9 +257,9 @@ For example:
 
 We now have \(SS_{Tr}\) is the Treatment sum of squares, \(SS_{E}\) is the Error sum of squares and \(SS_{T}\) is the Total sum of squares
 \begin{align*}
-  SS_{T} & = \sum_{i=1}^{C} \sum_{j=1}^{n_i} y_{ij}^2 - \frac{y_{\cdot\cdot}^2}{N}  \\
-  SS{Tr} & = \sum_{i=1}^{C} \frac{y_{i\cdot}^{2}}{n_i} - \frac{y_{\cdot\cdot}^2}{N} \\
-  SS_{E} & = SS_{T} - SS{Tr}
+  SS_{T}  & = \sum_{i=1}^{C} \sum_{j=1}^{n_i} y_{ij}^2 - \frac{y_{\cdot\cdot}^2}{N}  \\
+  SS_{Tr} & = \sum_{i=1}^{C} \frac{y_{i\cdot}^{2}}{n_i} - \frac{y_{\cdot\cdot}^2}{N} \\
+  SS_{E}  & = SS_{T} - SS_{Tr}
 \end{align*}
 where \(n_i\) is the number of observations taken under treatment \(i\), i.e. \(N = \sum_{i=1}^{C} n_i\).
 
@@ -275,7 +275,7 @@ Firstly, we prepare the data.
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
 # Import the data
-data_file <- read.csv(file="ex1.csv")
+data_file <- read_excel("data.xlsx", sheet = "Sheet2")
 
 # Extract group names to data frame
 fr_gr_names <- data.frame(unique(data_file$group))
@@ -333,7 +333,7 @@ cat("F", F, "\n")
   \end{minted}
 \end{mdframed}
 
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=gray!10,nobreak=true]
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=teal!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
 Sums 1.29 1.73 1.85 1.48 1.33
 Averages 0.258 0.2471429 0.2642857 0.296 0.266
@@ -382,7 +382,8 @@ Moreover, the same results can be obtained using the built in One-way ANOVA func
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
 # Import the data
-data_file <- read.csv(file="resources/ex1.csv")
+data_file <- read_excel("data.xlsx", sheet = "Sheet2")
+
 
 # Built-in one-way ANOVA
 av = aov(data_file$value~data_file$group)
@@ -392,7 +393,7 @@ print(summary(av))
   \end{minted}
 \end{mdframed}
 
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=teal!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
                 Df  Sum Sq  Mean Sq F value Pr(>F)
 data_file$group  4 0.00729 0.001822   1.583  0.211
@@ -402,8 +403,8 @@ Residuals       24 0.02763 0.001151
 
 \subsubsection{Conclusion}
 The statistical appendix doesn't have an entry for \(f(0.03, 4, 24)\), thus we called for some help from \(R\).
-Due to the way it is implemented, we use \(qf(0.97, 4, 24)\) but not \(qf(0.03, 4, 24)\).
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+Due to the way it is implemented, we use \(qf(0.97, 4, 24)\) instead of \(qf(0.03, 4, 24)\).
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=teal!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
 > cat("F Crit", qf(0.97,4,24), "\n")
   \end{minted}
@@ -469,9 +470,14 @@ Considering a null hypothesis with the alternative hypothesis:
 Using \(R\), we can apply Chi-Square test to the data sample. First, we import the data located in the \(resources\) folder, using the following simple commands:
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+if (!require("readxl"))
+  install.packages("readxl")
+library("readxl")
+
 # Import the data
-file_path <- 'resources/ex2.csv'
-income <- read.csv(file = file_path, sep = ",", row.names = 1, stringsAsFactors = FALSE, check.names = FALSE)
+income <- read_xlsx("data.xlsx", sheet = "Sheet3", col_names = FALSE, col_types = NULL)
+colnames(income) = c("0-1","1-2","2-3","3-4","4-6",">6")
+rownames(income) = c("40-50","50-60")
 data <- as.matrix(income)
   \end{minted}
 \end{mdframed}
@@ -490,7 +496,7 @@ print(chisq)
 \end{mdframed}
 
 The output should be:
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=gray!10,nobreak=true]
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=teal!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
 > print(chisq$observed)
       0-1 1-2  2-3  3-4  4-6  >6
@@ -566,7 +572,7 @@ ifelse(
 \end{mdframed}
 
 If we look closely, we can see that there are two \(ifelse\) statements. These represent the two methods to come to a conclusion that the null hypothesis is rejected or not. The output should be:
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=gray!10,nobreak=true]
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=teal!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
 "Accept H0 by comparing with critical point"
 [1] "Accept H0 by comparing with significance level"
@@ -610,7 +616,7 @@ In addition, every block has a definite and assigned random value, we consider t
 \subsubsection{Theory base}
 For definition of Analysis Of Variance (ANOVA) and One-Way ANOVA, refer to \hyperref[anovaDef]{\underline{Theory base of Problem 1}}.
 
-However, One-Way ANOVA solves the problem with only one treatment affecting its end result. If there are two treatments, One-way ANOVA yields to fail as it only calculates one treatment as \(SS_{Tr}\) while the other treatment will be ignored. So although \(SS_{T}\) will remain the same, \(SS_{E}\) will be too large due to lack of the second treatment, giving false \(F0\) and thus false conclusion.
+However, One-Way ANOVA solves the problem with only one treatment affecting its ending result. If there are two treatments, One-way ANOVA yields to fail as it only calculates one treatment as \(SS_{Tr}\) while the other treatment will be ignored. So although \(SS_{T}\) will remain the same, \(SS_{E}\) will be too large due to lack of the second treatment, giving false \(F0\) and thus wrong conclusion.
 
 Two-Way ANOVA solves the trivial problem as it uses a categorical variable --- or blocks --- to calculate the missing second treatment. This means a third element, called \(SS_{B}\), is added when formulating \(SS_{T}\),  calculates the sum of squares of blocks:
 \begin{align*}
@@ -727,9 +733,9 @@ We can also use Programming language R to solve this problem.
 First, we prepare the data
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
-#Import data
-Ques3_dataset <- read.csv(file = "resources/ex3.csv")
-head(Ques3_dataset)
+#Import the data
+Ques3_dataset <- read_xlsx("data.xlsx", sheet = "Sheet4")
+
   \end{minted}
 \end{mdframed}
 
@@ -761,7 +767,7 @@ print(qf(0.99,3,9))
 \end{mdframed}
 
 Outputs:
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=gray!10,nobreak=true]
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=teal!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
             Df Sum Sq Mean Sq F value Pr(>F)
 day_of_week  3    9.5   3.167   2.036  0.179
@@ -819,9 +825,14 @@ For this problem, we construct a null hypothesis and the following alternative h
 For analyzing the data, we will use \(R\). The first step should be requiring the data from \(resources\) folder:
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+if (!require("readxl"))
+  install.packages("readxl")
+library("readxl")
+
 # Import the data
-file_path <- 'resources/ex4.csv'
-type <- read.csv(file = file_path, sep = ",", row.names = 1, stringsAsFactors = FALSE, check.names = FALSE)
+type <- read_xlsx("data.xlsx", sheet = "Sheet5", col_names = FALSE, col_types = NULL)
+colnames(type) = c("A","B","C")
+rownames(type) = c("4-8","8-12","12-16","16-20","20-24")
 data <- as.matrix(type)
   \end{minted}
 \end{mdframed}
@@ -839,7 +850,7 @@ print(round(chisq$expected, 2))
 \end{mdframed}
 
 The expected output:
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=gray!10,nobreak=true]
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=teal!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
 > print(chisq$observed)
         A   B  C
@@ -920,7 +931,7 @@ ifelse(
 \end{mdframed}
 
 The result after executing:
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=gray!10,nobreak=true]
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=teal!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
 "Reject H0 by comparing with critical point"
 [1] "Reject H0 by comparing with significance level"
@@ -947,7 +958,7 @@ In a linear model, a relationship between a scalar response and one or more expl
 For linear regression, a relationship between multiple variables using a linear line is defined. Linear regression attempts to draw a line that comes closest to the data by finding the slope and intercept that define the line and minimize regression errors.
 
 \subsubsection{Simple linear regression}\label{simpleLRDef}
-In simple linear regression, a relationship between two variables is created using a linear line and regression attempts to draw a line that comes closest to the data by finding the slope and the intercept that define the line and minimize random error component.
+In simple linear regression, a relationship between two variables is created using a linear line and regression attempts to draw a line that comes closest to the data by finding the slope and the interception that define the line and minimize random error component.
 
 Observing some paired data points \((x_1, y_1), (x_2, y_2), \dots, (x_n, y_n)\), where we assume that as a function of \(x_i\), each \(y_i\) is generated by using some true underlying line \(y = \beta_0 + \beta_1x\) that we evaluate at \(x_i\), and then adding some random error component.
 Formally
@@ -968,10 +979,9 @@ Then
          & = \beta_0 + \beta_1x_1
 \end{align*}
 
-\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Multiple linear regression}
-In multiple scalars, put in a vector \(x_1, x_2, \dots, x_p\) for every data point \(i\). So, we have \(n\) data points just like before, each with \(p\) different predictor variables or \textbf{features}. We'll then try to predict \(y\) for each data point as a linear function of the different \(x\) variables.
+In multiple scalars, put in a vector \(x_1, x_2, \dots, x_p\) for every data point \(i\). So, we have \(n\) observations just like before, each with \(p\) different predictor variables or \textbf{features}. We'll then try to predict \(y\) for each data point as a linear function of the different \(x\) variables.
 \begin{align*}
   y = \beta_1 x_1 + \beta_2 x_2 + \cdots + \beta_p x_p
 \end{align*}
@@ -979,7 +989,7 @@ In multiple scalars, put in a vector \(x_1, x_2, \dots, x_p\) for every data poi
 Even though it's still linear, this representation is very versatile, here are just a few things we can represent with it:
 \begin{itemize}
   \item Multiple dependent: suppose we're trying to predict medical outcome as a function of several variables such as age, genetic susceptibility, and clinical diagnosis, and \(y = \text{outcome}\)
-  \item Nonlinearities: suppose we to predict a quadratic function \(y = ax^2 + bx + c\), then for each data point we might say \(x_1 = 1,\ x_2 = x,\ x_3 = x^2\). This can easily be extended to any nonlinear function we want.
+  \item Nonlinearities: suppose we are to predict a quadratic function \(y = ax^2 + bx + c\), then for each data point we might say \(x_1 = 1,\ x_2 = x,\ x_3 = x^2\). This can easily be extended to any nonlinear function we want.
 \end{itemize}
 
 We can represent our input data in matrix form as \(X\), an \(x \times p\) matrix where each row corresponds to a data point and each column corresponds to a feature. Since each output \(y_i\) is just a single number, we'll represent the collection as an \(n-\text{element}\) column vector \(y\).
@@ -1003,15 +1013,14 @@ We can use some linear algebra to solve this problem and find the optimal estima
 which \(R\) will do for you. We can also obtain confidence intervals and/or hypothesis tests for each coefficient.
 
 It is important to blindly test whether all the coefficients are greater than zero.
-But before even doing that, it's often smarter to measure whether the model even explains a significant amount of the variability in the data: if doesn't, then it isn't even worth testing any of the coefficients individually.
+But before even doing that, it is often smarter to measure whether the model even explains a significant amount of the variability in the data: if does not, then it is not even worth testing any of the coefficients individually.
 Typically, we use \textbf{ANOVA} test to measure this.
 If the ANOVA test determines that the model explains a significant portion of the variability in the data, then we can consider testing each of the hypotheses and correcting for multiple comparisons.
 
-We can also ask about which features have the most effect: if a feature's coefficient is \(0\) or close to \(0\), then that feature has little to no impact on the final result.
+We can also ask about which features have the most effect: if a coefficient of feature is \(0\) or close to \(0\), then that feature has little to no impact on the final result.
 We need to avoid the effect of scale: for example, if one feature is measured in feet and another in inches, even if they're the same, the coefficient for the feet feature will be twelve times larger.
 In order to avoid this problem, we'll usually look at the standardized coefficients \(\frac{\hat{\beta_k}}{s_{\beta_{k}}}\)
 
-\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Model Construction}
 
@@ -1021,7 +1030,7 @@ Building a model from a bunch of data is not easy, considering there are many fa
   \item Subject of Construction: First and foremost, we have to determine which categorical variables will be used to construct the model, from two to all categorical variables.
   \item Data Ambiguity: Normally, a model is constructed by numbers.
         But to some categorical variables, it is simply not the case, either if the number is in a definite range, its value is too high for consideration or it's just simply not a decimal number (e.g.: Binary, ``text'' or Boolean value).
-        To prevent that we can either use data conversion or data frequency.
+        To prevent that we can either use transformation or data frequency.
   \item Missing Value: Of course, not all values are assigned.
         In that case, we need to determine a method to fill in the missing values.
   \item Data frequency: Forwarding as a method of Data Ambiguity, we also have to determine how the data is going to be split into.
@@ -1038,10 +1047,11 @@ For these types of problem, all of these methods will be used for a complete, ro
         \end{itemize}
   \item Data Visualization
         \begin{itemize}
-          \item Data Conversion: By using specific function (e.g.: \(\log(x)\), \(a{(x+b)}^c\), \(e^x\), etc.), we transform the value of specific categorical variables to a new value that is more approachable and easier to calculate.
+          \item Transformation: By using specific function (e.g.: \(\log(x)\), \(a{(x+b)}^c\), \(e^x\), etc.), we transform the value of specific categorical variables to a new value that is more approachable and easier to calculate.
           \item Descriptive statistics:
                 \begin{itemize}
-                  \item For continuous categorical variables, transform them into a table consisting of \mintinline{R}{mean()}, \mintinline{R}{median()}, \mintinline{R}{sd()}, \mintinline{R}{min()}, \mintinline{R}{max()}, \mintinline{R}{apply()}, \mintinline{R}{as.data.frame()}, \mintinline{R}{rownames()}
+                  \item For continuous categorical variables, transform them into a table consisting of \mintinline{R}{mean()}, \mintinline{R}{median()}, \mintinline{R}{sd()}, \mintinline{R}{min()}, \mintinline{R}{max()}, \mintinline{R}{apply()},   \mintinline{R}{rownames()},
+                        \mintinline{R}{as.data.frame()}
                   \item For discrete categorical variables, transform them into a table consisting of groups with suitable ranges.
                 \end{itemize}
           \item Plotting: A linear regression model should be put into a discrete graph.
@@ -1098,32 +1108,32 @@ In this report, we recommend doing these steps in order.
         At this point, we have a model with possibly a few categorical variables.
         The idea basically is, we take our supreme generated model and compare with itself without some categorical variable.
         Should the models be no different, we can dump the originally generated one and go on with the model with fewer factor variables.
-        Should the models be different, we can stick with the original model as we don't want any changes in output here.
+        Otherwise, we can stick with the original model as we don't want any significant changes in output here.
 \end{itemize}
 
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Creating linear regression model}
 \subsubsection{Data importation}
-To initiate the program, the steps to retrieve the data from storage and acquire the necessary packages is essential. The following code is built with that in mind:
+To initiate the program, the step to retrieve the data from storage and acquire the necessary packages is essential. The following code is built with that in mind:
 
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
 ######### 1. Import data #########
-# set working directory
+# Set working directory
 # setwd("D:/HCMUT/HK202/Statistics and Probabilities/BTL")
+if (!require("readxl"))
+  install.packages("readxl")
+library("readxl")
 
-# install packages to use
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(pacman, rio)
+# Import the data
+grade_csv <- read_excel("data.xlsx", sheet = "Sheet1")
 
-# import file
-grade_csv <- import("grade.csv")
 
-# choose useful information
-grade_csv <- subset(grade_csv,select =c(sex,age,studytime,failures,higher,absences,G1,G2,G3))
+# Choose useful information
+grade_csv <- subset(grade_csv, select = c(sex, age, studytime, failures, higher, absences, G1, G2, G3))
 
-# show the table after choose subset
+# Show the table after choose subset
 head(grade_csv)
   \end{minted}
 \end{mdframed}
@@ -1132,7 +1142,7 @@ Before executing any of these lines, we must set the working directory to source
 
 The next step is to import the data, but after completing that step, we must filter the whole data, choosing the variables required for analyzing and construct a table with appropriate variable names rather than every individual line with separated information. To cover it up, visualize it with \mintinline{R}{head()} for further investigations if needed:
 
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=teal!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
 > head(grade_csv)
   sex age studytime failures higher absences G1 G2 G3
@@ -1145,7 +1155,6 @@ The next step is to import the data, but after completing that step, we must fil
   \end{minted}
 \end{mdframed}
 
-\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsubsection{Data cleaning}
@@ -1161,14 +1170,14 @@ sum(is.na(grade_csv))
 
 The above code is used for calculating the number of table cells have the N/A value. The output to the screen for this particular line is 5, which means there are five value that are not defined in this table.
 
-Refer to the output printed above, we see that the number of cells that contain N/A value is quite small relative to the number of participated data. Because of that, we consider to remove the row with the corresponding N/A value and worst case scenario we remove five rows with five distinct N/A value.
+Refer to the output printed above, we see that the number of cells that contain N/A value is quite small relative to the number of participated data. Because of that, we consider to remove the rows with the corresponding N/A value and worst case scenario we remove five rows with five distinct N/A value.
 
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
 # Saving the columns that have NA value
 remCols = names(which(colSums(is.na(grade_csv)) > 0))
 
-# Removing the columns with NA value
+# Removing the rows with NA value
 grade_csv <- grade_csv[!is.na(grade_csv[, remCols]),]
 
 # After cleaning number of data have NA value is 0
@@ -1178,7 +1187,6 @@ sum(is.na(grade_csv))
 
 If all is according to plan, we expect the \mintinline{R}{sum(is.na(grade_csv))} to print out 0. This is due to we intended to remove the N/A value so the table now has exactly zero that value.
 
-\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsubsection{Data visualization}
@@ -1216,7 +1224,7 @@ con_table
 \end{mdframed}
 
 We put all the analyzed statistics in a data frame and print out the data for organized result:
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=teal!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
         absences        G1        G2        G3
 mean    5.715385 10.925641 10.717949 10.412821
@@ -1246,31 +1254,27 @@ cat_higher
 \end{mdframed}
 
 Print the result to the screen to observe the data:
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=gray!10,nobreak=true]
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=teal!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
 > cat_sex
   F   M
 205 185
-  \end{minted}
-  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
+
 > cat_age
-  15  16  17  18  19  20  21  22
-  81 101  97  82  24   3   1   1
-  \end{minted}
-  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
+ 15  16  17  18  19  20  21  22
+ 81 101  97  82  24   3   1   1
+
 > cat_studytime
   1   2   3   4
 105 194  64  27
-  \end{minted}
-  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
+
 > cat_failures
   0   1   2   3
 307  50  17  16
-  \end{minted}
-  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
+
 > cat_higher
-  no yes
-  20 370
+ no yes
+ 20 370
   \end{minted}
 \end{mdframed}
 
@@ -1358,7 +1362,6 @@ Executing each line, there will be an individual plot shown on the screen and on
   \includegraphics[width=0.4\textwidth]{pairs_g2.png}
 \end{figure}
 
-\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsubsection{Building linear regression models}
@@ -1374,8 +1377,8 @@ summary(M_all)
 \end{mdframed}
 
 Obtain the result containing information, parameters for the regression program when we call the \mintinline{R}{summary()} function:
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=gray!10,nobreak=true]
-  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=teal!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
 Call:
 lm(formula = G3 ~ sex + age + studytime + failures + higher +
     absences + G1 + G2, data = grade_csv)
@@ -1415,11 +1418,11 @@ F-statistic: 230.1 on 8 and 381 DF,  p-value: < 2.2e-16
 \end{itemize}
 
 \begin{itemize}
-  \item[-] Observing the p-value that is the value of \(Pr(>|t|)\) in the Coefficients part. It's a probability that coefficient is insignificance in your model so smaller is better. Then we have t-test for:
+  \item[-] Observing the p-value that is the value of \(\Pr(>|t|)\) in the Coefficients part. It's a probability that coefficient is insignificance in your model so smaller is better. Then we have t-test for:
 \end{itemize}
 \begin{itemize}
-  \item[+] null-hypothesis $H_{0}$: the coefficient is \textbf{insignificance} or this factor has no effect on the predictors
-  \item[+] alternative-hypothesis $H_{1}$: the coefficient is \textbf{significance} or this factor has effect on the predictors
+  \item[+] null-hypothesis \(H_{0}\): the coefficient is \textbf{insignificance} or this factor has no effect on the predictors
+  \item[+] alternative-hypothesis \(H_{1}\): the coefficient is \textbf{significance} or this factor has effect on the predictors
         \begin{itemize}
           \item With \(\alpha = 0.05\)
                 \begin{itemize}
@@ -1431,7 +1434,7 @@ F-statistic: 230.1 on 8 and 381 DF,  p-value: < 2.2e-16
                 \end{itemize}
         \end{itemize}
 
-        We can see that the \(P-value_{age}\) is nearly close to \(0.05\) while others is very far from this value. Therefore we decide the factors that absolutely insignificance in the predictor are \(sex, studytime, failures, higher.\) And after that we also keep \(age\) to examine that factor is have effect on the model or not.
+        We can see that the \(P-value_{age}\) is nearly close to 0.05 while others is very far from this value. Therefore we decide the factors that absolutely insignificance in the predictor are \(sex, studytime, failures, higher\). And after that we also keep \(age\) to examine that factor is have effect on the model or not.
 \end{itemize}
 
 \begin{itemize}
@@ -1452,9 +1455,8 @@ anova(M_all, M1)
 \begin{itemize}
   \item [-] The result show that:
 \end{itemize}
-
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
-  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=teal!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
 Analysis of Variance Table
 
 Model 1: G3 ~ sex + age + studytime + failures + higher + absences + G1 + G2
@@ -1468,7 +1470,8 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 \end{mdframed}
 
 \begin{itemize}
-  \item[-] With the null-hypothesis \(H_0:\) These two models M1 and M\_all perform the same effectiveness . With \(alpha = 5\%\) and observing from the ANOVA table we see that \(p-value = 0.3162 > 0.05\) then we \textbf{fail to reject null-hypothesis}. From that we can conclude that 2 model are perform the same effectiveness. Therefore, we \textbf{choose model M1 to continue} because it more simpler than M\_all to reduce cost of computation.
+  \item[-] With the null-hypothesis \(H_0\): These two models M1 and M\_all perform the same effectiveness.
+  With \(alpha = 5\% \) and observing from the ANOVA table we see that \(p-value = 0.3162 > 0.05\) then we \textbf{fail to reject null-hypothesis}. From that we can conclude that 2 model are perform the same effectiveness. Therefore, we \textbf{choose model M1 to continue} because it more simpler than M\_all to reduce cost of computation.
 \end{itemize}
 
 \begin{itemize}
@@ -1487,9 +1490,8 @@ anova(M1, M2)
 \begin{itemize}
   \item [-] The result show that:
 \end{itemize}
-
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=gray!10,nobreak=true]
-  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=teal!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
 Analysis of Variance Table
 
 Model 1: G3 ~ age + absences + G1 + G2
@@ -1502,7 +1504,7 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
   \end{minted}
 \end{mdframed}
 \begin{itemize}
-  \item[-] With the null-hypothesis \(H_0:\) These two models M1 and M2 perform the same effectiveness instead of M2 lacking the factor age. With \(alpha = 5\%\) and observing from the ANOVA table we see that \(p-value = 0.01724 < 0.05\) then we \textbf{reject null-hypothesis}. We can conclude that 2 model are perform the different effectiveness or significance. Which is also said that \textbf{factor age might affect the final grade G3}. Therefore, we are decide to \textbf{choose model M1 to be the most suitable model}.
+  \item[-] With the null-hypothesis \(H_0\): These two models M1 and M2 perform the same effectiveness instead of M2 lacking the factor age. With \(alpha = 5\%\) and observing from the ANOVA table we see that \(p-value = 0.01724 < 0.05\) then we \textbf{reject null-hypothesis}. We can conclude that 2 model are perform the different effectiveness or significance. Which is also said that \textbf{factor age might affect the final grade G3}. Therefore, we are decide to \textbf{choose model M1 to be the most suitable model}.
   \item[-] We can see that if we decided to remove factor age from the beginning, we can nearly drop out some important factor from our datasets that might be affected to your model a lot.
 \end{itemize}
 
@@ -1530,7 +1532,7 @@ plot(M1)
 
 
 \begin{itemize}
-  \item[-] Model's prediction is quite good, the linear regression (red line) is neighboring Residual = 0, the observed value concentrate around the read line and the residual plot do not have specific pattern. This is indicated that the model M1 we choose is sure-enough approriate.
+  \item[-] Model's prediction is quite good, the linear regression (red line) is neighboring Residual = 0, the observed value concentrate around the read line and the residual plot do not have specific pattern. This is indicated that the model M1 we choose is sure-enough appropriate.
 \end{itemize}
 
 
@@ -1540,13 +1542,13 @@ plot(M1)
 
         \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
           \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
-summary(M1)
-          \end{minted}
+ summary(M1)
+  \end{minted}
         \end{mdframed}
 \end{itemize}
 
-\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=gray!10,nobreak=true]
-  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
+\begin{mdframed}[leftline=false,rightline=false,backgroundcolor=teal!10,nobreak=true]
+  \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{text}
 Call:
 lm(formula = G3 ~ age + absences + G1 + G2, data = grade_csv)
 
@@ -1616,6 +1618,13 @@ new_grade <- cbind(new_grade, predict_evaluate)
   \end{minted}
 \end{mdframed}
 
+Let's see what new\_grade contain after binding predict\_evaluate column into it:
+
+\begin{center}
+  \makebox[\textwidth]{\includegraphics[width=\textwidth]{evaluate_predict.PNG}}
+\end{center}
+
+
 \begin{itemize}
   \item[-] Evaluate the final grade G3 of observed value:
 \end{itemize}
@@ -1628,12 +1637,37 @@ grade_csv <- cbind(grade_csv, evaluate)
   \end{minted}
 \end{mdframed}
 
+Let's see what grade\_csv contain after binding evaluate column into it:
+
+\begin{center}
+  \makebox[\textwidth]{\includegraphics[width=\textwidth]{evaluate_observed.PNG}}
+\end{center}
+
+\begin{itemize}
+  \item[-] We are assessing the precision through out the prediction by creating a table to compare the result between G3 and predict\_G3. By using the above function to check whether student can fail or pass, we can compare the proportion of Fail and Pass between G3 and predict\_G3
+\end{itemize}
 
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
-
+## create a data frame to compare between G3(real data) and predicted value
+evaluate1 = prop.table(table(grade_csv$evaluate == "Pass"))
+evaluate2 = prop.table(table(new_grade$predict_evaluate == "Pass"))
+Output = data.frame(cbind(evaluate1, evaluate2))
+colnames(Output) = c("Real", "Predicted")
+rownames(Output) = c("Fail", "Pass")
+Output
   \end{minted}
 \end{mdframed}
+
+The proportion of Fail and Pass between the observed and predicted value:
+
+\begin{center}
+  {\includegraphics{proportion.PNG}}
+\end{center}
+
+\begin{itemize}
+  \item[-] \textbf{Conclusion:} Depending on the result we have obtained between the observed and predicted value about the proportion of student Fail or Pass, we see that appear a insignificant different between the observed and predicted value. The reason might be caused by the outliers of the datasets so they effect the final prediction. However in general, these value still can be accepted. We do not remove outliers out of datasets because when I do this, the model might be leaved out some special case that importance for others research. For example, the student have first period and second grade between 0 and 10 who feel that if they continue to study, they still can not pass so they decided to drop out before doing test to get final grade.
+\end{itemize}
 
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

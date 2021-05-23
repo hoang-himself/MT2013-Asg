@@ -1,10 +1,20 @@
+# Clear environment
+rm(list = ls())
+
 # Import the data
 file_path <- 'resources/ex2.csv'
-income <- read.csv(file = file_path, sep = ",", row.names = 1, stringsAsFactors = FALSE, check.names = FALSE)
+income <-
+  read.csv(
+    file = file_path,
+    sep = ",",
+    row.names = 1,
+    stringsAsFactors = FALSE,
+    check.names = FALSE
+  )
 data <- as.matrix(income)
 
 # Computing Chi-square
-chisq <- chisq.test(data) 
+chisq <- chisq.test(data)
 
 # Print observed counts & expected counts
 print(chisq$observed)
@@ -25,7 +35,7 @@ ifelse(
   "Accept H0 by comparing with critical point"
 )
 
-#Check for rejection by comparing with significance level
+# Check for rejection by comparing with significance level
 ifelse(
   pval < alpha,
   "Reject H0 by comparing with significance level",

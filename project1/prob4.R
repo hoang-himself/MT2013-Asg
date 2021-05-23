@@ -1,10 +1,20 @@
+# Clear environment
+rm(list = ls())
+
 # Import the data
 file_path <- 'resources/ex4.csv'
-type <- read.csv(file = file_path, sep = ",", row.names = 1, stringsAsFactors = FALSE, check.names = FALSE)
+type <-
+  read.csv(
+    file = file_path,
+    sep = ",",
+    row.names = 1,
+    stringsAsFactors = FALSE,
+    check.names = FALSE
+  )
 data <- as.matrix(type)
 
 # Computing Chi-square
-chisq <- chisq.test(data) 
+chisq <- chisq.test(data)
 
 # Print observed counts & expected counts
 print(chisq$observed)

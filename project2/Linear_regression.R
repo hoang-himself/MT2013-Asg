@@ -14,7 +14,9 @@ pacman::p_load(pacman, rio)
 grade_csv <- import("grade.csv")
 
 # Choose useful information
-grade_csv <- subset(grade_csv, select = c(sex, age, studytime, failures, higher, absences, G1, G2, G3))
+grade_csv <-
+  subset(grade_csv,
+         select = c(sex, age, studytime, failures, higher, absences, G1, G2, G3))
 
 # Show the table after choose subset
 head(grade_csv)
@@ -101,11 +103,16 @@ grid.arrange(
 
 # Box plot of G3 for sex, age, studytime, failures, higher
 grid.arrange(
-  ggplot(grade_csv, aes(x=as.character(sex), y=G3 )) + geom_boxplot() + scale_x_discrete(name="Sex"),
-  ggplot(grade_csv, aes(x=as.character(age), y=G3)) + geom_boxplot() + scale_x_discrete(name="Age"),
-  ggplot(grade_csv, aes(x=as.character(studytime), y=G3)) + geom_boxplot() + scale_x_discrete(name="Study time"),
-  ggplot(grade_csv, aes(x=as.character(failures), y=G3)) + geom_boxplot() + scale_x_discrete(name="Failures"),
-  ggplot(grade_csv, aes(x=as.character(higher), y=G3)) + geom_boxplot() + scale_x_discrete(name="Higher"),
+  ggplot(grade_csv, aes(x = as.character(sex), y = G3)) + geom_boxplot() + scale_x_discrete(name =
+                                                                                              "Sex"),
+  ggplot(grade_csv, aes(x = as.character(age), y = G3)) + geom_boxplot() + scale_x_discrete(name =
+                                                                                              "Age"),
+  ggplot(grade_csv, aes(x = as.character(studytime), y = G3)) + geom_boxplot() + scale_x_discrete(name =
+                                                                                                    "Study time"),
+  ggplot(grade_csv, aes(x = as.character(failures), y = G3)) + geom_boxplot() + scale_x_discrete(name =
+                                                                                                   "Failures"),
+  ggplot(grade_csv, aes(x = as.character(higher), y = G3)) + geom_boxplot() + scale_x_discrete(name =
+                                                                                                 "Higher"),
   ncol = 2
 )
 
@@ -121,7 +128,8 @@ pairs(G3 ~ absences, grade_csv)
 ############ 4. Fitting linear regression model ###############
 
 ####### --------> create model full factor <-----------
-M_all <- lm(G3 ~ sex + age + studytime + failures + higher + absences + G1 + G2, data = grade_csv)
+M_all <-
+  lm(G3 ~ sex + age + studytime + failures + higher + absences + G1 + G2, data = grade_csv)
 summary(M_all)
 
 
@@ -134,7 +142,7 @@ anova(M_all, M1) # there no difference between M_all and M1 when we remove some 
 
 
 ####### ---------> from model M1 we remove factor age <---------
-M2 <- lm(G3 ~absences + G1 + G2, data = grade_csv)
+M2 <- lm(G3 ~ absences + G1 + G2, data = grade_csv)
 summary(M2)
 # anova between M1 and M2
 anova(M1, M2) # there difference between M1 and M2 when we remove age factor
@@ -162,7 +170,8 @@ new_grade <- grade_csv
 predict_G3 <- predict(M1)
 new_grade <- cbind(new_grade, predict_G3)
 ## check fail or pass of prediction in new table
-predict_evaluate <- c(apply(new_grade["predict_G3"], MARGIN = 1, FUN = failpass))
+predict_evaluate <-
+  c(apply(new_grade["predict_G3"], MARGIN = 1, FUN = failpass))
 new_grade <- cbind(new_grade, predict_evaluate)
 
 
