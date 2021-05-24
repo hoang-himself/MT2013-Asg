@@ -87,7 +87,7 @@
 		\tiny \bf
 	\end{tabular}  }
 \fancyfoot{} % clear all footer fields
-\fancyfoot[L]{\scriptsize \ttfamily Assignment for Probability and Statistics-Academic year 2020 --- 2021}
+\fancyfoot[L]{\scriptsize \ttfamily Assignment for Probability and Statistics -- Academic year 2020 -- 2021}
 \fancyfoot[R]{\scriptsize \ttfamily Page {\thepage}/\pageref{LastPage}}
 \renewcommand{\headrulewidth}{0.3pt}
 \renewcommand{\footrulewidth}{0.3pt}
@@ -107,7 +107,7 @@
 
   \begin{figure}[h!]
     \begin{center}
-      \includegraphics[width=0.5\textwidth]{hcmut.png}
+      \includegraphics[width=0.4\textwidth]{hcmut.png}
     \end{center}
   \end{figure}
 
@@ -118,9 +118,9 @@
       \textbf{\Large Probability and Statistics (MT2013)} \\
       {}                                                  \\
       \midrule                                            \\
-      \textbf{\Large Semester 202, Duration: 03 weeks}    \\
+      \textbf{\Large Semester 202}    \\
       {}                                                  \\
-      \textbf{\Huge Assignment}                           \\
+      \textbf{\Huge Project}                           \\
       {}                                                  \\
       \bottomrule
     \end{tabular}
@@ -129,8 +129,13 @@
   \vspace{3cm}
 
   \begin{table}[h]
-    \begin{tabular}{rrl}
-      \hspace{5cm} & Advisor: & Nguyễn Tiến Dũng \\
+    \begin{tabular}{rll}
+      \hspace{1cm} Advisor:  & Mr.\ Nguyễn Tiến Dũng           \\
+      \hspace{1cm} Students: &                                 \\
+                             & Lưu Nguyễn Hoàng Minh & 1952845 \\
+                             & Nguyễn Hoàng          & 1952255 \\
+                             & Nguyễn Chính Khôi     & 1952793 \\
+                             & Nguyễn Duy Thành      & 1952456 \\
     \end{tabular}
   \end{table}
 
@@ -154,10 +159,10 @@
     \toprule
     \textbf{No.} & \textbf{Full name}             & \textbf{Student ID} & \textbf{Problems} & \textbf{Percentage of work} \\
     \midrule
-    1            & Lưu Nguyễn Hoàng Minh (leader) & 1952845             & Project 2         & 100\%                       \\
-    2            & Nguyễn Hoàng                   & 1952255             & Project 1         & 100\%                       \\
-    3            & Nguyễn Chính Khôi              & 1952793             & Project 1         & 100\%                       \\
-    4            & Nguyễn Duy Thành               & 1952456             & Project 1         & 100\%                       \\
+    1            & Lưu Nguyễn Hoàng Minh & 1952845             & Project 2         & 25\%                       \\
+    2            & Nguyễn Hoàng                   & 1952255             & Project 1         & 25\%                       \\
+    3            & Nguyễn Chính Khôi              & 1952793             & Project 1         & 25\%                       \\
+    4            & Nguyễn Duy Thành               & 1952456             & Project 1         & 25\%                       \\
     \bottomrule
   \end{tabular}
 \end{center}
@@ -377,7 +382,7 @@ Let's arrange this mess into a table for some reason.
   \end{tabular}
 \end{center}
 
-Congratulations! We have calculated the F value of this problem \(F = 1.582784\).
+We have calculated the F value of this problem \(F = 1.582784\).
 Moreover, the same results can be obtained using the built in One-way ANOVA function.
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
@@ -402,7 +407,7 @@ Residuals       24 0.02763 0.001151
 \end{mdframed}
 
 \subsubsection{Conclusion}
-The statistical appendix doesn't have an entry for \(f(0.03, 4, 24)\), thus we called for some help from \(R\).
+The statistical appendix does not have an entry for \(f(0.03, 4, 24)\), thus we called for some help from \(R\).
 Due to the way it is implemented, we use \(qf(0.97, 4, 24)\) instead of \(qf(0.03, 4, 24)\).
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=teal!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
@@ -1441,7 +1446,7 @@ F-statistic: 230.1 on 8 and 381 DF,  p-value: < 2.2e-16
   \item We try to compare the model that contain all the independent variable with the model that we have just remove some insignificance factors from above to see whether 2 model that is perform the same effectiveness.
 \end{itemize}
 \begin{itemize}
-  \item[-] We create model \(M1\) contain the dependent variables are \(age, absences, G1, G2\) and do ANOVA test to recommend the better linear regression model com:
+  \item[-] We create model \(M1\) contain the dependent variables are \(age, absences, G1, G2\) and do ANOVA test to recommend the better linear regression model:
 \end{itemize}
 \begin{mdframed}[leftline=false,rightline=false,backgroundcolor=magenta!10,nobreak=true]
   \begin{minted}[linenos,breaklines,breaksymbolleft=,obeytabs=true,tabsize=2]{R}
@@ -1666,7 +1671,7 @@ The proportion of Fail and Pass between the observed and predicted value:
 \end{center}
 
 \begin{itemize}
-  \item[-] \textbf{Conclusion:} Depending on the result we have obtained between the observed and predicted value about the proportion of student Fail or Pass, we see that appear a insignificant different between the observed and predicted value. The reason might be caused by the outliers of the datasets so they effect the final prediction. However in general, these value still can be accepted. We do not remove outliers out of datasets because when I do this, the model might be leaved out some special case that importance for others research. For example, the student have first period and second grade between 0 and 10 who feel that if they continue to study, they still can not pass so they decided to drop out before doing test to get final grade.
+  \item[-] \textbf{Conclusion:} Depending on the result we have obtained between the observed and predicted value about the proportion of student Fail or Pass, we see that appear a insignificant different between the observed and predicted value. The reason might be caused by the outliers of the datasets so they effect the final prediction. However in general, these value still can be accepted. We do not remove outliers out of datasets because when I do this, the model might be leaved out some special case that importance for others research.
 \end{itemize}
 
 \newpage
